@@ -7,6 +7,7 @@ import android.view.Menu;
 
 //Clone repository in desktop. I try to commit and push to original. @SN
 //Clone in Macbook Pro. I cloned repository and try to commit and push! @SN
+//Commiting and pushing. In another machine user has to PULL to get changes!
 public class MainActivity extends Activity {
 
     @Override
