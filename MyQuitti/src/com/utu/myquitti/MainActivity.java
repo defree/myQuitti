@@ -5,7 +5,8 @@ import android.app.Activity;
 import android.view.Menu;
 
 
-//Clone repository. I try to commit and push to original.
+//Clone repository in desktop. I try to commit and push to original. @SN
+//Clone in Macbok Pro. I cloned repository and try to commit and push! @SN
 public class MainActivity extends Activity {
 
     @Override
