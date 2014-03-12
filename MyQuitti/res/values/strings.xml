@@ -4,5 +4,10 @@
     <string name="app_name">MyQuitti</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string name="take">Take Picture!</string>
+    <string name="set">Set Wallpaper!</string>
+    
+    <string name="desc">Simple camera app</string>
 
 </resources>
