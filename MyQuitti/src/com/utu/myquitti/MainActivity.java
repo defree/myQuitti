@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
+
+//Clone repository. I try to commit and push to original.
 public class MainActivity extends Activity {
 
     @Override
