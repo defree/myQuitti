@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
-import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,14 +18,13 @@ import android.widget.Toast;
 
 public class CameraAppActivity extends Activity implements View.OnClickListener {
 
-Button wall,take;
+Button list,take;
 ImageView pic;
 Intent i;
 int cameraData = 0;
 Bitmap bmp;
 
-WallpaperManager wpm;
-Drawable wd;
+
 
 	protected void onCreate(Bundle b) {
 		super.onCreate(b);
@@ -34,11 +32,11 @@ Drawable wd;
 
 		InputStream is = getResources().openRawResource(R.drawable.camera);
 		bmp = BitmapFactory.decodeStream(is);
-		wall = (Button) findViewById(R.id.set);
+		list = (Button) findViewById(R.id.list);
 		take = (Button) findViewById(R.id.tak);
 		pic = (ImageView) findViewById(R.id.image);
 
-		wall.setOnClickListener(this);
+		list.setOnClickListener(this);
 		take.setOnClickListener(this);
 
 	}
@@ -48,17 +46,12 @@ Drawable wd;
 		
 		
 		int id = v.getId();
-		if (id == R.id.set) {
-			try{
-				wpm = WallpaperManager.getInstance(this);
-			    wd = wpm.getDrawable();
-			    wpm.setBitmap(bmp);
+		if (id == R.id.list) {
 
-				Toast.makeText(getApplicationContext(), "Wallpaper Set", Toast.LENGTH_LONG).show();
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
+			Intent intent = new Intent(this, ImageListActivity.class);
+			startActivity(intent);
+
+
 		} else if (id == R.id.tak) {
 			i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			startActivityForResult(i,cameraData);
