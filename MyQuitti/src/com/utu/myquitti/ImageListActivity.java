@@ -2,6 +2,7 @@ package com.utu.myquitti;
 
 
 import java.io.File;
+import java.util.ArrayList;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,118 +11,121 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class ImageListActivity extends ListActivity {
+public class ImageListActivity extends Activity {
  
  //define source of MediaStore.Images.Media, internal or external storage
 	
-
 	
 	
- final Uri sourceUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
- final Uri thumbUri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
- final String thumb_DATA = MediaStore.Images.Thumbnails.DATA;
- final String thumb_IMAGE_ID = MediaStore.Images.Thumbnails.IMAGE_ID;
+	
 
- SimpleCursorAdapter mySimpleCursorAdapter;
- 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        
-        String[] from = {MediaStore.MediaColumns.TITLE};
-        int[] to = {android.R.id.text1};
 
-        CursorLoader cursorLoader = new CursorLoader(
-          this, 
-          sourceUri, 
-          null, 
-          null, 
-          null, 
-          MediaStore.Audio.Media.TITLE);
-        
-        Cursor cursor = cursorLoader.loadInBackground();
-        
-        mySimpleCursorAdapter = new SimpleCursorAdapter(
-          this, 
-          android.R.layout.simple_list_item_1, 
-          cursor, 
-          from, 
-          to, 
-          CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        
-        setListAdapter(mySimpleCursorAdapter);
-        
-        getListView().setOnItemClickListener(myOnItemClickListener);
-    }
-    
-    OnItemClickListener myOnItemClickListener
-    = new OnItemClickListener(){
+	private int count;
+	private Bitmap[] thumbnails;
+	private boolean[] thumbnailsselection;
+	private String[] arrPath;
+	private ImageAdapter imageAdapter;
+	ArrayList<String> f = new ArrayList<String>();// list of file paths
+	File[] listFile;
 
-  @Override
-  public void onItemClick(AdapterView<?> parent, View view, int position,
-    long id) {
-   Cursor cursor = mySimpleCursorAdapter.getCursor();
-   cursor.moveToPosition(position);
 
-   int int_ID = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media._ID));
-   getThumbnail(int_ID);
-  }};
- 
- private Bitmap getThumbnail(int id){
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_list);
+	    getFromSdcard();
+	    GridView imagegrid = (GridView) findViewById(R.id.gridview);
+	    imageAdapter = new ImageAdapter(this);
+	    imagegrid.setAdapter(imageAdapter);
 
-  String[] thumbColumns = {thumb_DATA, thumb_IMAGE_ID};
 
-  CursorLoader thumbCursorLoader = new CursorLoader(
-          this, 
-          thumbUri, 
-    thumbColumns, 
-    thumb_IMAGE_ID + "=" + id, 
-    null, 
-    null);
-        
-        Cursor thumbCursor = thumbCursorLoader.loadInBackground();
-        
-        Bitmap thumbBitmap = null;
-        if(thumbCursor.moveToFirst()){
-   int thCulumnIndex = thumbCursor.getColumnIndex(thumb_DATA);
-   
-   String thumbPath = thumbCursor.getString(thCulumnIndex);
-   
-   Toast.makeText(getApplicationContext(), 
-     thumbPath, 
-     Toast.LENGTH_LONG).show();
-   
-   thumbBitmap = BitmapFactory.decodeFile(thumbPath);
-   
-   //Create a Dialog to display the thumbnail
-   AlertDialog.Builder thumbDialog = new AlertDialog.Builder(ImageListActivity.this);
-   ImageView thumbView = new ImageView(ImageListActivity.this);
-   thumbView.setImageBitmap(thumbBitmap);
-   LinearLayout layout = new LinearLayout(ImageListActivity.this);
-         layout.setOrientation(LinearLayout.VERTICAL);
-         layout.addView(thumbView);
-         thumbDialog.setView(layout);
-         thumbDialog.show();
-   
-  }else{
-   Toast.makeText(getApplicationContext(), 
-     "NO Thumbnail!", 
-     Toast.LENGTH_LONG).show();
-  }
-        
-        return thumbBitmap;
- }
+	}
+
+	public void getFromSdcard()
+	{
+		File getfile= new File(android.os.Environment.getExternalStorageDirectory(),"receipts");
+
+	        if (getfile.isDirectory())
+	        {
+	            listFile = getfile.listFiles();
+
+
+	            for (int i = 0; i < listFile.length; i++)
+	            {
+
+	                f.add(listFile[i].getAbsolutePath());
+
+	            }
+	        }		
+	}
+
+
+	public class ImageAdapter extends BaseAdapter {
+
+	    private Context context;
+	    
+	    
+	    public ImageAdapter(Context c) {
+	        context = c;
+	    }
+
+	    public int getCount() {
+	        return f.size();
+	    }
+
+	    public Object getItem(int position) {
+	        return position;
+	    }
+
+	    public long getItemId(int position) {
+	        return position;
+	    }
+
+	    
+		public View getView(int position, View view, ViewGroup parent) {
+			ImageView iview;
+			if (view == null) {
+				iview = new ImageView(context);
+				
+		        Bitmap myBitmap = BitmapFactory.decodeFile(f.get(position));
+		        iview.setImageBitmap(myBitmap);
+				
+				
+				iview.setLayoutParams(new GridView.LayoutParams(150,200));
+				iview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+				iview.setPadding(5, 5, 5, 5);
+			} else {
+				iview = (ImageView) view;	
+			}
+						
+
+			return iview;
+		}
+	    
+
+	}
+	class ViewHolder {
+	    ImageView imageview;
+
+
+	}
 }
