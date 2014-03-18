@@ -1,8 +1,11 @@
 package com.utu.myquitti;
 
 
+import java.io.File;
+
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.CursorAdapter;
@@ -22,6 +25,10 @@ import android.graphics.BitmapFactory;
 public class ImageListActivity extends ListActivity {
  
  //define source of MediaStore.Images.Media, internal or external storage
+	
+
+	
+	
  final Uri sourceUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
  final Uri thumbUri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
  final String thumb_DATA = MediaStore.Images.Thumbnails.DATA;

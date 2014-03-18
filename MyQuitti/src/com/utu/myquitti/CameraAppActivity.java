@@ -1,14 +1,25 @@
 package com.utu.myquitti;
 
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,16 +27,25 @@ import android.widget.Toast;
 
 
 
+
 public class CameraAppActivity extends Activity implements View.OnClickListener {
 
-Button list,take;
-ImageView pic;
-Intent i;
-int cameraData = 0;
-Bitmap bmp;
+	Button list,take;
+	ImageView pic;
+	Intent i;
+	int cameraData = 0;
+	Bitmap bmp;
 
+    File photostorage;
+    File photofile;
+    
+    private Uri mUri;
 
-
+    private Bitmap mPhoto;
+	
+    private static final int TAKE_PICTURE = 0;
+    
+    @Override    
 	protected void onCreate(Bundle b) {
 		super.onCreate(b);
 		setContentView(R.layout.activity_main);
@@ -38,9 +58,10 @@ Bitmap bmp;
 
 		list.setOnClickListener(this);
 		take.setOnClickListener(this);
+		
 
 	}
-
+    @Override
 	public void onClick(View v) {
 		
 		
@@ -48,23 +69,73 @@ Bitmap bmp;
 		int id = v.getId();
 		if (id == R.id.list) {
 
-			Intent intent = new Intent(this, ImageListActivity.class);
-			startActivity(intent);
+			Intent listintent = new Intent(this, ImageListActivity.class);
+			startActivity(listintent);
 
 
 		} else if (id == R.id.tak) {
-			i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			startActivityForResult(i,cameraData);
-		}
-	}
+        
+			Intent i = new Intent("android.media.action.IMAGE_CAPTURE");
 
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+			File f = new File(Environment.getExternalStorageDirectory(),  "photo.jpg");
+			
+			i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+			
+			mUri = Uri.fromFile(f);
+			
+			startActivityForResult(i, TAKE_PICTURE);
+			
+        }
+		
+	}
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if(resultCode == RESULT_OK) {
-			Bundle extras = data.getExtras();
-			bmp = (Bitmap) extras.get("data");
-			pic.setImageBitmap(bmp);
+		switch (requestCode) {
+		
+			case TAKE_PICTURE:
+			
+				if (resultCode == Activity.RESULT_OK) {
+				
+				getContentResolver().notifyChange(mUri, null);
+				
+				ContentResolver cr = getContentResolver();
+				
+					try {
+					
+					mPhoto = android.provider.MediaStore.Images.Media.getBitmap(cr, mUri);
+					
+					((ImageView)findViewById(R.id.image)).setImageBitmap(mPhoto);
+					
+					
+	                String root = Environment.getExternalStorageDirectory().toString();
+	                File newDir = new File(root + "/receipts");
+	                newDir.mkdirs();
+	                Calendar cal = Calendar.getInstance();
+	                
+	                
+	                String fotoname = "receipt_"+ cal.getTimeInMillis() +".jpg";
+	                File file = new File (newDir, fotoname);
+	                
+                    FileOutputStream out = new FileOutputStream(file);
+                    mPhoto.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    out.flush();
+                    out.close();
+                    Toast.makeText(getApplicationContext(), "Saved to your folder", Toast.LENGTH_SHORT ).show();
+	                
+					} catch (Exception e) {
+					
+					Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+					
+					}
+		
+				}
+
 		}
-	}
+
+    }
+
 }
