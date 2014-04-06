@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,8 +44,7 @@ public class ImageListActivity extends Activity {
 	private boolean[] thumbnailsselection;
 	private String[] arrPath;
 	private ImageAdapter imageAdapter;
-	ArrayList<String> f = new ArrayList<String>();// list of file paths
-	File[] listFile;
+
 
 
 	/** Called when the activity is first created. */
@@ -52,80 +52,24 @@ public class ImageListActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_list);
-	    getFromSdcard();
+	    
 	    GridView imagegrid = (GridView) findViewById(R.id.gridview);
-	    imageAdapter = new ImageAdapter(this);
-	    imagegrid.setAdapter(imageAdapter);
-
+	    
+	    imagegrid.setAdapter(new ImageAdapter(this));
+	    
+        imagegrid.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                    int position, long id) {
+ 
+                // Sending image id to FullScreenActivity
+                Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
+                // passing array index
+                i.putExtra("id", position);
+                startActivity(i);
+            }
+        });
 
 	}
 
-	public void getFromSdcard()
-	{
-		File getfile= new File(android.os.Environment.getExternalStorageDirectory(),"receipts");
-
-	        if (getfile.isDirectory())
-	        {
-	            listFile = getfile.listFiles();
-
-
-	            for (int i = 0; i < listFile.length; i++)
-	            {
-
-	                f.add(listFile[i].getAbsolutePath());
-
-	            }
-	        }		
-	}
-
-
-	public class ImageAdapter extends BaseAdapter {
-
-	    private Context context;
-	    
-	    
-	    public ImageAdapter(Context c) {
-	        context = c;
-	    }
-
-	    public int getCount() {
-	        return f.size();
-	    }
-
-	    public Object getItem(int position) {
-	        return position;
-	    }
-
-	    public long getItemId(int position) {
-	        return position;
-	    }
-
-	    
-		public View getView(int position, View view, ViewGroup parent) {
-			ImageView iview;
-			if (view == null) {
-				iview = new ImageView(context);
-				
-		        Bitmap myBitmap = BitmapFactory.decodeFile(f.get(position));
-		        iview.setImageBitmap(myBitmap);
-				
-				
-				iview.setLayoutParams(new GridView.LayoutParams(150,200));
-				iview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				iview.setPadding(5, 5, 5, 5);
-			} else {
-				iview = (ImageView) view;	
-			}
-						
-
-			return iview;
-		}
-	    
-
-	}
-	class ViewHolder {
-	    ImageView imageview;
-
-
-	}
 }
