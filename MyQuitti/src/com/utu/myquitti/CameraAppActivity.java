@@ -47,9 +47,11 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     
     @Override    
 	protected void onCreate(Bundle b) {
-		super.onCreate(b);
+    	
+    	super.onCreate(b);
 		setContentView(R.layout.activity_main);
-
+		Log.d("CameraAppActivity", "#####CameraAppActivity.onCreate()#####");
+		
 		InputStream is = getResources().openRawResource(R.drawable.camera);
 		bmp = BitmapFactory.decodeStream(is);
 		list = (Button) findViewById(R.id.list);
@@ -127,8 +129,8 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
                     Toast.makeText(getApplicationContext(), "Saved to your folder", Toast.LENGTH_SHORT ).show();
 	                
 					} catch (Exception e) {
-					
-					Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+						Log.e("CameraAppActivity", "Received an exception in onActivityResult", e);
+						Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
 					
 					}
 		

@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,10 @@ public class ImageListActivity extends Activity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
+		
+		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_list);
+	    Log.d("ImageListActivity", "#####ImageListActivity.onCreate()#####");
 	    
 	    GridView imagegrid = (GridView) findViewById(R.id.gridview);
 	    
@@ -61,7 +64,7 @@ public class ImageListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
- 
+            	
                 // Sending image id to FullScreenActivity
                 Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
                 // passing array index
