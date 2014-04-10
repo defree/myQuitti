@@ -4,10 +4,23 @@
     <string name="app_name">MyQuitti</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    
-    <string name="take">Take Receipt</string>
+    <string name="take">2. Take Receipt</string>
     <string name="list">Browse Receipts</string>
-    
+    <string name="category">1. Choose a Category</string>
     <string name="desc">Simple camera app</string>
-
+    <string name="title_activity_my_quitti_camera">MyQuittiCameraActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+	
+    <string name="category_prompt">Choose a category</string>
+ 
+    <string-array name="categories">
+        <item>Business trip</item>
+        <item>Holiday</item>
+        <item>Home</item>
+        <item>Car</item>
+       
+    </string-array>
+    
+    
 </resources>

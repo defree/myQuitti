@@ -20,6 +20,14 @@
         android:orientation="vertical" >
 
         <Button
+            android:id="@+id/category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="5dp"
+            android:text="@string/category" />
+        
+        <Button
             android:id="@+id/tak"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,5 +42,7 @@
             android:layout_margin="5dp"
             android:text="@string/list" />
     </LinearLayout>
+
+    
 
 </FrameLayout>

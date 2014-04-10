@@ -1,7 +1,6 @@
 package com.utu.myquitti;
 
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,7 +10,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,8 +22,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 
@@ -30,7 +33,7 @@ import android.widget.Toast;
 
 public class CameraAppActivity extends Activity implements View.OnClickListener {
 
-	Button list,take;
+	Button list,take,category;
 	ImageView pic;
 	Intent i;
 	int cameraData = 0;
@@ -52,14 +55,21 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		setContentView(R.layout.activity_main);
 		Log.d("CameraAppActivity", "#####CameraAppActivity.onCreate()#####");
 		
+		
+		
 		InputStream is = getResources().openRawResource(R.drawable.camera);
 		bmp = BitmapFactory.decodeStream(is);
 		list = (Button) findViewById(R.id.list);
 		take = (Button) findViewById(R.id.tak);
+		category = (Button) findViewById(R.id.category);
+		
 		pic = (ImageView) findViewById(R.id.image);
 
 		list.setOnClickListener(this);
 		take.setOnClickListener(this);
+		take.setClickable(false);
+		
+		category.setOnClickListener(this);
 		
 
 	}
@@ -69,6 +79,9 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		
 		
 		int id = v.getId();
+		Log.d("CameraAppActivity", "#####ID----->"+id);
+		
+		
 		if (id == R.id.list) {
 
 			Intent listintent = new Intent(this, ImageListActivity.class);
@@ -87,6 +100,30 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 			
 			startActivityForResult(i, TAKE_PICTURE);
 			
+        }
+		
+		/*
+		 *When pressed Choose a category-button, dialog will
+		 * open and user can choose a category to his receipts 
+		 */
+		else if (id == R.id.category) {
+			
+			Log.d("CameraAppActivity", "Category-button pressed");
+			String[] items = new String[] {"Business", "Business trip to London", "Famliy","Holiday", "Home", };
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+			        android.R.layout.simple_spinner_dropdown_item, items);
+			
+			new AlertDialog.Builder(this)
+			  .setTitle("the prompt")
+			  .setAdapter(adapter, new DialogInterface.OnClickListener() {
+
+			    @Override
+			    public void onClick(DialogInterface dialog, int which) {
+			    Log.d("CameraAppActivity", "#####which pressed" +which);
+			      dialog.dismiss();
+			    }
+			  }).create().show();
+			take.setClickable(true);
         }
 		
 	}
