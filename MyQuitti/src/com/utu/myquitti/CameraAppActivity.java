@@ -6,8 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import com.utu.myquitti.pojos.ImageArray;
+import com.utu.myquitti.pojos.ReceiptImage;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -45,7 +49,9 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     private Uri mUri;
 
     private Bitmap mPhoto;
-	
+	private ReceiptImage savedImage = null;
+	private ImageArray images = null;
+	private ArrayList<ReceiptImage> savedImages = null;
     private static final int TAKE_PICTURE = 0;
     
     @Override    
@@ -70,6 +76,14 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		take.setClickable(false);
 		
 		category.setOnClickListener(this);
+		images = new ImageArray();
+		
+		/* TODO: Think where and when is wise to populate this list with images in phones memory?
+		 * I think that here we should create a new method for populating the list object
+		 * @Sami Nurmi
+		 * */
+		
+		savedImages = new ArrayList<ReceiptImage>(); 
 		
 
 	}
@@ -138,7 +152,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 			case TAKE_PICTURE:
 			
 				if (resultCode == Activity.RESULT_OK) {
-				
+					savedImage = new ReceiptImage();	
 				getContentResolver().notifyChange(mUri, null);
 				
 				ContentResolver cr = getContentResolver();
@@ -150,17 +164,22 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 					((ImageView)findViewById(R.id.image)).setImageBitmap(mPhoto);
 					
 					
-	                String root = Environment.getExternalStorageDirectory().toString();
-	                File newDir = new File(root + "/receipts");
+					savedImage.setRootDirectory(Environment.getExternalStorageDirectory().toString());
+	                File newDir = new File(savedImage.getRootDirectory() + "/receipts");
 	                newDir.mkdirs();
 	                Calendar cal = Calendar.getInstance();
 	                
 	                
 	                String fotoname = "receipt_"+ cal.getTimeInMillis() +".jpg";
 	                File file = new File (newDir, fotoname);
+	                savedImage.setFile(file);
 	                
                     FileOutputStream out = new FileOutputStream(file);
                     mPhoto.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    
+                    savedImage.setmPhoto(mPhoto);
+                    savedImages.add(savedImage);
+                    
                     out.flush();
                     out.close();
                     Toast.makeText(getApplicationContext(), "Saved to your folder", Toast.LENGTH_SHORT ).show();
@@ -176,5 +195,15 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		}
 
     }
-
+    
+    /**
+     * When the app is opening, saved images is read to this list
+     * @Sami Nurmi
+     * @return
+     */
+    private ArrayList<ReceiptImage> populateSavedImages(){
+		return savedImages;
+    	
+    	
+    }
 }
