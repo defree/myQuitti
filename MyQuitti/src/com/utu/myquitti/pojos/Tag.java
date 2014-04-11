@@ -1,13 +1,17 @@
 package com.utu.myquitti.pojos;
 
+import java.io.Serializable;
+
 
 /**
  * User can give tags to receipts as an extra info
  * @author saminurmi
  *
  */
-public class Tag {
+public class Tag implements Serializable {
 
+	
+	private static final long serialVersionUID = 1L;
 	private String tag;
 
 	/**

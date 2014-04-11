@@ -19,7 +19,7 @@ public class ReceiptImage implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String rootDirectory;
 	private String fotoname;
-	private Bitmap mPhoto;
+	private Bitmap mPhoto; //Esa, this is a problem (Bitmap), this is not serializing!
 	private ArrayList<Category> categories;
 	private ArrayList<Tag> tags;
 	private File file;

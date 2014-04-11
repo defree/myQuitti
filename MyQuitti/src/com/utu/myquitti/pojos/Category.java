@@ -1,13 +1,17 @@
 package com.utu.myquitti.pojos;
 
+import java.io.Serializable;
+
 
 /**
  * Category Pojo
  * @author saminurmi
  *
  */
-public class Category {
+public class Category implements Serializable {
 
+	
+	private static final long serialVersionUID = 1L;
 	private String categoryText;
 	private String category;
 	
