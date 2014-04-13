@@ -1,16 +1,22 @@
 package com.utu.myquitti;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+//import com.utu.myquitti.pojos.BitmapDataObject;
+//import com.utu.myquitti.pojos.Canvas;
 import com.utu.myquitti.pojos.ImageArray;
+//import com.utu.myquitti.pojos.Paint;
 import com.utu.myquitti.pojos.ReceiptImage;
 
 import android.app.Activity;
@@ -174,8 +180,11 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 	                File file = new File (newDir, fotoname);
 	                savedImage.setFile(file);
 	                
-                    FileOutputStream out = new FileOutputStream(file);
-                    mPhoto.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    FileOutputStream fileout = new FileOutputStream(file);
+                    ObjectOutputStream out = new ObjectOutputStream(fileout);
+                    //mPhoto.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    
+                    writeObject(out);
                     
                     savedImage.setmPhoto(mPhoto);
                     savedImages.add(savedImage);
@@ -195,6 +204,24 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		}
 
     }
+    
+	private void writeObject(ObjectOutputStream out) throws IOException{
+	    //out.writeObject(title);
+	    //out.writeInt(width);
+	    //out.writeInt(height);
+
+	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	    mPhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
+	    ReceiptImage bitmapDataObject = new ReceiptImage();     
+	    bitmapDataObject.imageByteArray = stream.toByteArray();
+
+	    out.writeObject(bitmapDataObject);
+	}
+
+	/** Included for serialization - read this object from the supplied input stream. */
+
+    
+    
     
     /**
      * When the app is opening, saved images is read to this list

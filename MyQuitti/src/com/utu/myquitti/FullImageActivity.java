@@ -1,6 +1,9 @@
 package com.utu.myquitti;
 
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,8 +28,21 @@ public class FullImageActivity extends Activity {
         ImageAdapter imageAdapter = new ImageAdapter(this);
  
         ImageView imageView = (ImageView) findViewById(R.id.full_image_view);
-        Bitmap myBitmap = BitmapFactory.decodeFile(imageAdapter.getItemLoc(position));
-        imageView.setImageBitmap(myBitmap);
+        
+		FileInputStream filein = null;
+		ObjectInputStream in = null;
+		
+		try {
+			filein = new FileInputStream(imageAdapter.getItemLoc(position));
+			in = new ObjectInputStream(filein);
+			imageAdapter.readObject(in);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
+        imageView.setImageBitmap(imageAdapter.myBitmap);
     }
  
 }

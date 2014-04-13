@@ -1,5 +1,6 @@
 package com.utu.myquitti.pojos;
 
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ReceiptImage implements Serializable {
 	
 	
 	private static final long serialVersionUID = 1L;
+	public byte[] imageByteArray;
 	private String rootDirectory;
 	private String fotoname;
 	private Bitmap mPhoto; //Esa, this is a problem (Bitmap), this is not serializing!
@@ -24,6 +26,8 @@ public class ReceiptImage implements Serializable {
 	private ArrayList<Tag> tags;
 	private File file;
 	private int size;
+	private int width;
+	private int height;
 	private Bitmap thumbnail;
 	private String extraInfo;
 	private Bitmap icon;
@@ -140,6 +144,7 @@ public class ReceiptImage implements Serializable {
 		this.isChecked = isChecked;
 	}
 	
+
 	
 }
 	
