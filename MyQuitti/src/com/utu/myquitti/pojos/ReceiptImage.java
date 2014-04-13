@@ -27,6 +27,7 @@ public class ReceiptImage implements Serializable {
 	private Bitmap thumbnail;
 	private String extraInfo;
 	private Bitmap icon;
+	private boolean isChecked;
 	
 	public File getFile() {
 		return file;
@@ -126,6 +127,20 @@ public class ReceiptImage implements Serializable {
 		this.icon = icon;
 	
 	}
+	/**
+	 * @return the isChecked
+	 */
+	public boolean isChecked() {
+		return isChecked;
+	}
+	/**
+	 * @param isChecked the isChecked to set
+	 */
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
+	}
+	
+	
 }
 	
 
