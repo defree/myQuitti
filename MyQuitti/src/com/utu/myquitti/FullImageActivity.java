@@ -29,9 +29,12 @@ public class FullImageActivity extends Activity {
  
         ImageView imageView = (ImageView) findViewById(R.id.full_image_view);
         
+
+		
+		/*
 		FileInputStream filein = null;
 		ObjectInputStream in = null;
-		
+
 		try {
 			filein = new FileInputStream(imageAdapter.getItemLoc(position));
 			in = new ObjectInputStream(filein);
@@ -40,9 +43,14 @@ public class FullImageActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		imageView.setImageBitmap(imageAdapter.myBitmap);
+        */
         
-        
-        imageView.setImageBitmap(imageAdapter.myBitmap);
+		//Bitmap-setting, hopefully a smaller image
+		BitmapFactory.Options bfo = new BitmapFactory.Options();
+        bfo.inSampleSize = 4;
+        //Set image
+        imageView.setImageBitmap(BitmapFactory.decodeFile(imageAdapter.f.get(position),bfo));
     }
  
 }

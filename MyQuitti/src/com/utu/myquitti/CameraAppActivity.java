@@ -67,7 +67,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 	protected void onCreate(Bundle b) {
     	
     	datasource = new MyQuittiDatasource(this);
-        datasource.open();
+        //datasource.open(); tupla?
 
     	
     	super.onCreate(b);
@@ -136,7 +136,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		else if (id == R.id.category) {
 			
 			Log.d("CameraAppActivity", "Category-button pressed");
-			categoryItems = new String[] {"Business", "Business trip to London", "Famliy","Holiday", "Home", };
+			categoryItems = new String[] {"Business", "Business trip to London", "Family","Holiday", "Home", };
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 			        android.R.layout.simple_spinner_dropdown_item, categoryItems);
 			
@@ -191,16 +191,16 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 	                savedImage.setFile(file);
 	                
                     FileOutputStream fileout = new FileOutputStream(file);
-                    ObjectOutputStream out = new ObjectOutputStream(fileout);
-                    //mPhoto.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    //ObjectOutputStream out = new ObjectOutputStream(fileout);
+                    mPhoto.compress(Bitmap.CompressFormat.JPEG, 90, fileout);
                     
-                    writeObject(out);
+                    
                     
                     savedImage.setmPhoto(mPhoto);
                     savedImages.add(savedImage);
                     System.out.println("#########Ennen createReceipt 1 ###############");
-                    out.flush();
-                    out.close();
+                    fileout.flush();
+                    fileout.close();
                     
                     System.out.println("#########Ennen createReceipt 2 ###############");
                     datasource.open();
@@ -222,7 +222,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		}
 
     }
-    
+  /*  //For serialization, now not used
 	private void writeObject(ObjectOutputStream out) throws IOException{
 	    //out.writeObject(title);
 	    //out.writeInt(width);
@@ -235,7 +235,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 
 	    out.writeObject(bitmapDataObject);
 	}
-
+	*/
 	/** Included for serialization - read this object from the supplied input stream. */
 
     

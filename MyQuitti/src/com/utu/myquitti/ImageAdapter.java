@@ -8,16 +8,19 @@ import java.io.ObjectInputStream;
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 
+import com.utu.myquitti.pojos.Category;
 import com.utu.myquitti.pojos.ReceiptImage;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter {
 
@@ -70,40 +73,75 @@ public class ImageAdapter extends BaseAdapter {
 	}
     
 	public View getView(int position, View view, ViewGroup parent) {
-		ImageView iview;
+		
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		View gridView;
+		TextView textView;
+		ImageView imageView;
+		//ImageView iview;
+		
+		MyQuittiDatasource datasource;
+    	datasource = new MyQuittiDatasource(context);
+        datasource.open();
+		
+        //Category category = new Category();
+        //category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));
+        
+        //String cat = category.getCategoryText();
+        
+		String category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));;
+		
+		datasource.close();
+		
 		if (view == null) {
-			iview = new ImageView(context);
 			
-			FileInputStream filein = null;
-			ObjectInputStream in = null;
+			//For serialization
+			//iview = new ImageView(context);
+			//FileInputStream filein = null; 
+			//ObjectInputStream in = null;
+			
+			gridView = inflater.inflate(R.layout.activity_list_extend, null);
+
+			textView = (TextView) gridView.findViewById(R.id.grid_item_label);
+			//Set category text
+			textView.setText(category);
+			
+			imageView = (ImageView) gridView.findViewById(R.id.grid_item_image);
+			
+			//Bitmap-setting, hopefully a smaller image
+			BitmapFactory.Options bfo = new BitmapFactory.Options();
+            bfo.inSampleSize = 4;
+			
+			//System.out.println(f.get(position).replace("/storage/emulated/0/receipts/", ""));
 			
 			try {
-				filein = new FileInputStream(f.get(position));
-				in = new ObjectInputStream(filein);
-				readObject(in);
+				myBitmap = BitmapFactory.decodeFile(f.get(position),bfo);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			
+
 			
 			
 	        //myBitmap = BitmapFactory.decodeFile(f.get(position));
-	        iview.setImageBitmap(myBitmap);
+	        //Set image
+			imageView.setImageBitmap(myBitmap);
 			
 			
-			iview.setLayoutParams(new GridView.LayoutParams(300,450));
+			//imageView.setLayoutParams(new GridView.LayoutParams(300,450));
+			
 			//iview.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			//iview.setPadding(5, 5, 5, 5);
 		} else {
-			iview = (ImageView) view;	
+			gridView = (View) view;
 		}
 					
 
-		return iview;
+		return gridView;
 	}
-	
+	/* //For serialization, now not used
 	public void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
 	    //title = (String)in.readObject();
 	    //sourceWidth = currentWidth = in.readInt();
@@ -124,5 +162,5 @@ public class ImageAdapter extends BaseAdapter {
 	    //thumbnailPaint.setStyle(Paint.Style.FILL);
 	}
     
-
+	*/
 }

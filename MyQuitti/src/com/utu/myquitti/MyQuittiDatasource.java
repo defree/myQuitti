@@ -156,6 +156,25 @@ public class MyQuittiDatasource {
 	  }
 
 
+	  public String getSingleCategory(String fotoname){
+		  //SELECT category.categorytext from receiptinfo inner join category on receiptinfo.receiptid=category.fk_category_receiptinfo WHERE photoname + "=" + fotoname
+		  
+		  //Cursor cursor = database.query(MySQLiteHelper.TABLE_RECEIPTINFO, allColumns, MySQLiteHelper.COLUMN_ROOTDIRECTORY + MySQLiteHelper.COLUMN_PHOTONAME + "=" + fotoname, 
+				  //null,null, null, null);
+		  //Cursor cursor = database.rawQuery("SELECT category.categorytext FROM receiptinfo,category WHERE receiptinfo.receiptid=category.fk_category_receiptinfo and receiptinfo.photoname = "+fotoname, null);
+		  Cursor cursor = database.rawQuery("SELECT category.categorytext from receiptinfo inner join category on receiptinfo.receiptid=category.fk_category_receiptinfo WHERE photoname = '"+fotoname+"'", null);
+		  cursor.moveToFirst();
+		  
+		  String category = "";
+		  
+		  if (cursor.moveToFirst()) {
+			  category = cursor.getString(cursor.getColumnIndex("categorytext"));
+		  }
+		   
+		  
+		  cursor.close();
+		  return category;
+	  }
 	  
 	  private Category getCategory(long receiptId){
 		  //fk_category_receiptinfo
@@ -167,6 +186,7 @@ public class MyQuittiDatasource {
 		  cursor.close();
 		  return cursorToCategory(cursor);
 	  }
+	  
 	  private ReceiptImage cursorToReceiptImage(Cursor cursor) {
 		  ReceiptImage newReceipt = new ReceiptImage();
 		  newReceipt.setReceiptId(cursor.getLong(0));
