@@ -26,7 +26,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_LATITUDE = "latitude ";
 
 	private static final String DATABASE_NAME = "myQuitti.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	
 	public static final String TABLE_CATEGORY = "category";

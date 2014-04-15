@@ -155,19 +155,67 @@ public class MyQuittiDatasource {
 	    return receipts;
 	  }
 
+	  public ReceiptImage getReceiptWithPhotoname(String photoname) {
+		  Log.d("MyQuittiDatasource", "getReceiptWithPhotoname: "+photoname);
+		  ReceiptImage receipt = null;
+		  this.open();
+		  
+		  
+		  Log.d("MyQuittiDatasource", "photoname: "+photoname);
+		  Cursor cursor = database.rawQuery("SELECT * FROM receiptinfo WHERE photoname = '"+photoname+"'", null); 
+		  //Cursor cursor = database.query(MySQLiteHelper.TABLE_RECEIPTINFO,
+		    //    allColumns,  MySQLiteHelper.COLUMN_PHOTONAME + " LIKE " + photoname, null, null, null, null);
+		    
+		    
+		    
+		    cursor.moveToFirst();
+		    //Comment newComment = cursorToComment(cursor);
+		    //cursor.close();
+		    if(cursor.getCount()>0){
+		    	
+		    	receipt = cursorToReceiptImage(cursor);
+		    	receipt.setCategory(getCategory(receipt.getReceiptId()));
+		    }
+		    
+	    	
+		   
+		    System.out.println("*********************");	
+		    
+		      
+		      //cursor.moveToNext();
+		    
+		    // make sure to close the cursor
+		    cursor.close();
+		    // and database connection
+		    this.close();
+		    Log.d("MyQuittiDatasource", "44444>");
+		    return receipt;
+		  }
+
+	  
 
 	  
 	  private Category getCategory(long receiptId){
 		  //fk_category_receiptinfo
 		  //Cursor c = db.rawQuery("SELECT * FROM tbl1 WHERE TRIM(name) = '"+name.trim()+"'", null);
+		  Category category = null;
 		  Cursor cursor = database.query(MySQLiteHelper.TABLE_CATEGORY,
-			        allCategoryColumns, MySQLiteHelper.COLUMN_RECEIPTID + " = " + receiptId, null,
+			        allCategoryColumns, MySQLiteHelper.COLUMN_CATEGORYRECEIPTID + " = " + receiptId, null,
 			        null, null, null);
 		  cursor.moveToFirst();
+		  System.out.println("CURSORIN PITUUS: " +cursor.getCount());
+		  if(cursor.getCount()>0){
+			  category = cursorToCategory(cursor);  
+			  
+		  }else{
+			  category = new Category();
+		  }
+		  
 		  cursor.close();
-		  return cursorToCategory(cursor);
+		  return category;
 	  }
 	  private ReceiptImage cursorToReceiptImage(Cursor cursor) {
+		  System.out.println("*******************cursorToReceiptImage************************");
 		  ReceiptImage newReceipt = new ReceiptImage();
 		  newReceipt.setReceiptId(cursor.getLong(0));
 		  newReceipt.setPhotoname(cursor.getString(1));
@@ -178,8 +226,8 @@ public class MyQuittiDatasource {
 	  }
 	  
 	  private Category cursorToCategory(Cursor cursor) {
-		System.out.println("*******************cursorToCategory************************");
-		  Log.d("cursorToCategory", "cursor.getLong(0) ID..>" +cursor.getLong(0) +" CATEGORYTEXT: " + cursor.getString(1) + " cursor.getLong(2) RECEIPTID---> " +cursor.getLong(2));
+		System.out.println("*******************cursorToCategory************************KOLUMNEJA" +cursor.getColumnCount());
+		  //Log.d("cursorToCategory", "cursor.getLong(0) ID..>" +cursor.getLong(0) +" CATEGORYTEXT: " + cursor.getString(1) + " cursor.getLong(2) RECEIPTID---> " +cursor.getLong(2));
 		  Category newCategory = new Category();
 		  newCategory.setCategoryId(cursor.getLong(0));
 		  newCategory.setCategoryText(cursor.getString(1));
