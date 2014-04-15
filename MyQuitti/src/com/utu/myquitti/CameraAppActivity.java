@@ -59,9 +59,16 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 	private ImageArray images = null;
 	private ArrayList<ReceiptImage> savedImages = null;
     private static final int TAKE_PICTURE = 0;
+    private MyQuittiDatasource datasource;
+    private String[] categoryItems;
+    private String chosenCategory;
     
     @Override    
 	protected void onCreate(Bundle b) {
+    	
+    	datasource = new MyQuittiDatasource(this);
+        datasource.open();
+
     	
     	super.onCreate(b);
 		setContentView(R.layout.activity_main);
@@ -129,9 +136,9 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		else if (id == R.id.category) {
 			
 			Log.d("CameraAppActivity", "Category-button pressed");
-			String[] items = new String[] {"Business", "Business trip to London", "Famliy","Holiday", "Home", };
+			categoryItems = new String[] {"Business", "Business trip to London", "Famliy","Holiday", "Home", };
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-			        android.R.layout.simple_spinner_dropdown_item, items);
+			        android.R.layout.simple_spinner_dropdown_item, categoryItems);
 			
 			new AlertDialog.Builder(this)
 			  .setTitle("the prompt")
@@ -140,6 +147,8 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 			    @Override
 			    public void onClick(DialogInterface dialog, int which) {
 			    Log.d("CameraAppActivity", "#####which pressed" +which);
+			    Log.d("CameraAppActivity", "#####which pressed" +categoryItems[which]);
+			    chosenCategory = categoryItems[which];
 			      dialog.dismiss();
 			    }
 			  }).create().show();
@@ -156,7 +165,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		switch (requestCode) {
 		
 			case TAKE_PICTURE:
-			
+				Log.d("TAKE_PICTURE", "#####case TAKE_PICTURE#####");
 				if (resultCode == Activity.RESULT_OK) {
 					savedImage = new ReceiptImage();	
 				getContentResolver().notifyChange(mUri, null);
@@ -171,7 +180,8 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 					
 					
 					savedImage.setRootDirectory(Environment.getExternalStorageDirectory().toString());
-	                File newDir = new File(savedImage.getRootDirectory() + "/receipts");
+					Log.d("RootDirectory", "#####savedImage.getRootDirectory#####" +savedImage.getRootDirectory());
+					File newDir = new File(savedImage.getRootDirectory() + "/receipts");
 	                newDir.mkdirs();
 	                Calendar cal = Calendar.getInstance();
 	                
@@ -188,11 +198,19 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
                     
                     savedImage.setmPhoto(mPhoto);
                     savedImages.add(savedImage);
-                    
+                    System.out.println("#########Ennen createReceipt 1 ###############");
                     out.flush();
                     out.close();
-                    Toast.makeText(getApplicationContext(), "Saved to your folder", Toast.LENGTH_SHORT ).show();
+                    
+                    System.out.println("#########Ennen createReceipt 2 ###############");
+                    datasource.open();
+                    datasource.createReceipt(savedImage.getRootDirectory(), "/receipts", "TESTING", fotoname,"","","",chosenCategory);
+                    datasource.close();
+                    System.out.println("#########Ennen createReceipt 3 ###############");
+                    Toast.makeText(getApplicationContext(), "Saved to your folder with category: " +chosenCategory, Toast.LENGTH_SHORT ).show();
 	                
+                    
+                    
 					} catch (Exception e) {
 						Log.e("CameraAppActivity", "Received an exception in onActivityResult", e);
 						Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

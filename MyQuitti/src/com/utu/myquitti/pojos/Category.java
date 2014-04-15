@@ -14,6 +14,8 @@ public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String categoryText;
 	private String category;
+	public long categoryId;
+	public long receiptId;
 	
 	/**
 	 * @return the categoryText
@@ -38,6 +40,30 @@ public class Category implements Serializable {
 	 */
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	/**
+	 * @return the categoryId
+	 */
+	public long getCategoryId() {
+		return categoryId;
+	}
+	/**
+	 * @param categoryId the categoryId to set
+	 */
+	public void setCategoryId(long categoryId) {
+		this.categoryId = categoryId;
+	}
+	/**
+	 * @return the receiptId
+	 */
+	public long getReceiptId() {
+		return receiptId;
+	}
+	/**
+	 * @param receiptId the receiptId to set
+	 */
+	public void setReceiptId(long receiptId) {
+		this.receiptId = receiptId;
 	}
 	
 }
