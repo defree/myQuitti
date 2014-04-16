@@ -24,19 +24,22 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_EXTRAINFO = "extraInfo";
 	public static final String COLUMN_LONGITUDE = "longitude ";
 	public static final String COLUMN_LATITUDE = "latitude ";
+	public static final String COLUMN_CREATEDATE = "createDate ";
 
 	private static final String DATABASE_NAME = "myQuitti.db";
 	private static final int DATABASE_VERSION = 3;
 
 	
 	public static final String TABLE_CATEGORY = "category";
-	public static final String TABLE_USERS_CATEGORY = "userscategory";
 	public static final String COLUMN_CATEGORYID = "categoryId";
 	public static final String COLUMN_CATEGORYTEXT = "categorytext";
 	public static final String COLUMN_CATEGORYRECEIPTID = "fk_category_receiptinfo";
 	
-	// Luontipäivämäärä+
-	// Database creation sql statement
+	public static final String TABLE_USERS_CATEGORY = "userscategory";
+	public static final String COLUMN_LOCALE = "locale";
+	public static final String COLUMN_LANGUAGE = "language";
+	
+	
 	private static final String DATABASE_CREATE = "create table "
 			+ TABLE_RECEIPTINFO + "(" + COLUMN_RECEIPTID
 			+ " integer primary key autoincrement, " + COLUMN_PHOTONAME
@@ -46,7 +49,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 			+ COLUMN_ISCHECKED + " text null, "
 			+ COLUMN_EXTRAINFO + " text null, "
 			+ COLUMN_LATITUDE + " text null," 
-			+ COLUMN_LONGITUDE + " text null"+ ")";
+			+ COLUMN_LONGITUDE + " text null,"
+			+ COLUMN_CREATEDATE +" DATETIME DEFAULT CURRENT_TIMESTAMP" + ")";
 			
 	/* create table category(categoryId INTEGER primary key autoincrement,categorytext TEXT,
 	 *  fk_category_receiptinfo INTEGER,FOREIGN KEY(fk_category_receiptinfo) REFERENCES receiptinfo(receiptId)); 
@@ -59,7 +63,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	
 	private static final String USERS_CATEGORY_CREATE="create table " +TABLE_USERS_CATEGORY + "(" 
 			+ COLUMN_CATEGORYID +" INTEGER primary key autoincrement," 
-			 + COLUMN_CATEGORYTEXT +" TEXT )";
+			 + COLUMN_CATEGORYTEXT +" TEXT, " 
+			 + COLUMN_LOCALE +" TEXT, " 
+			 + COLUMN_LANGUAGE +" TEXT "+" )";
 			 
 
 	
