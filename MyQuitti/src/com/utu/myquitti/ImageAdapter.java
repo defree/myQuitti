@@ -15,6 +15,7 @@ import com.utu.myquitti.pojos.ReceiptImage;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,10 +78,13 @@ public class ImageAdapter extends BaseAdapter {
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
+		ReceiptImage currentImage = null;
+		
 		View gridView;
 		TextView textView;
 		ImageView imageView;
 		//ImageView iview;
+		String category = "";
 		
 		MyQuittiDatasource datasource;
     	datasource = new MyQuittiDatasource(context);
@@ -94,13 +98,37 @@ public class ImageAdapter extends BaseAdapter {
         // ESA, tässä saat kaikki receiptit ja niiden categoryt! Poista Systemoutit sitten kun toimii
         List<ReceiptImage> receipts = datasource.getAllReceipts();
         for (int i = 0; i < receipts.size(); i++) {
+        	
         	ReceiptImage temp = receipts.get(i);
-        	 
-			System.out.println("-----------------------------");
-        	System.out.println("ID: " +temp.receiptId + " Photo name: " +temp.getPhotoname() + "Category: " +temp.getCategory().getCategory());
+        	
+        	//Full path of image
+        	String match = Environment.getExternalStorageDirectory().toString()+temp.getRootDirectory()+"/"+temp.getPhotoname();
+        	System.out.println(match);
+        	System.out.println(f.get(position));
+        	
+        	if (f.get(position) == match) {
+        		currentImage = receipts.get(i);
+        	}
+        		
+        	
+        	
+			//System.out.println("-----------------------------");
+        	System.out.println("root: "+temp.getRootDirectory()+" ID: " +temp.receiptId + " Photo name: " +temp.getPhotoname() + "Category: " +temp.getCategory().getCategory());
 		}
-		String category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));;
+		//category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));;
 		
+
+        //System.out.println(currentImage.getCategory());
+        
+        try {
+            if (currentImage.getCategory().getCategory() != null) {
+            	category = currentImage.getCategory().getCategory();
+            }
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+        
+        
 		datasource.close();
 		
 		if (view == null) {
