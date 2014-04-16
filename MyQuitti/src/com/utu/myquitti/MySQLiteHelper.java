@@ -8,8 +8,8 @@ import android.util.Log;
 
 /**
  * 
- * @author saminurmi
- * This is a helper class for 
+ * @author Sami Nurmi
+ * This is a helper class for creating DB-connection.
  * 
  */
 public class MySQLiteHelper extends SQLiteOpenHelper {
@@ -30,11 +30,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 	
 	public static final String TABLE_CATEGORY = "category";
+	public static final String TABLE_USERS_CATEGORY = "userscategory";
 	public static final String COLUMN_CATEGORYID = "categoryId";
 	public static final String COLUMN_CATEGORYTEXT = "categorytext";
 	public static final String COLUMN_CATEGORYRECEIPTID = "fk_category_receiptinfo";
 	
-
+	// Luontipäivämäärä+
 	// Database creation sql statement
 	private static final String DATABASE_CREATE = "create table "
 			+ TABLE_RECEIPTINFO + "(" + COLUMN_RECEIPTID
@@ -55,6 +56,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 					 + COLUMN_CATEGORYTEXT +" TEXT, "
 					 + "fk_category_receiptinfo INTEGER,"
 					 + "FOREIGN KEY(fk_category_receiptinfo) REFERENCES receiptinfo(receiptId)); ";
+	
+	private static final String USERS_CATEGORY_CREATE="create table " +TABLE_USERS_CATEGORY + "(" 
+			+ COLUMN_CATEGORYID +" INTEGER primary key autoincrement," 
+			 + COLUMN_CATEGORYTEXT +" TEXT )";
+			 
+
+	
 
 	public MySQLiteHelper(Context context) {
 		
@@ -64,19 +72,33 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase database) {
-		System.out.println("------DATABASE_CREATE--------->" +DATABASE_CREATE);
-		System.out.println("------CATEGORY_CREATE --------->" +CATEGORY_CREATE);
-	   
+		
 		database.execSQL(DATABASE_CREATE);
 		database.execSQL(CATEGORY_CREATE);
+		database.execSQL(USERS_CATEGORY_CREATE);
 		
 
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-
+	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+		Log.d(MySQLiteHelper.class.getName(),
+		        "Upgrading database from version " + oldVersion + " to "
+		            + newVersion + ", which will destroy all old data");
+		database.execSQL("DROP TABLE IF EXISTS "+TABLE_RECEIPTINFO);
+		database.execSQL("DROP TABLE IF EXISTS "+TABLE_CATEGORY);
+		database.execSQL("DROP TABLE IF EXISTS "+TABLE_USERS_CATEGORY);
+		onCreate(database);
 	}
+	
+	public void deleteReceiptsAndCategories(SQLiteDatabase database, int oldVersion, int newVersion) {
+		Log.d(MySQLiteHelper.class.getName(),
+		        "Upgrading database from version " + oldVersion + " to "
+		            + newVersion + ", which will destroy all old data");
+		database.execSQL("DROP TABLE IF EXISTS "+TABLE_RECEIPTINFO);
+		database.execSQL("DROP TABLE IF EXISTS "+TABLE_CATEGORY);
+		onCreate(database);
+	}
+	
 
 }

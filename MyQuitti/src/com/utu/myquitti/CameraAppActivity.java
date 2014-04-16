@@ -68,7 +68,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     	
     	datasource = new MyQuittiDatasource(this);
         //datasource.open(); tupla?
-
+    	
     	
     	super.onCreate(b);
 		setContentView(R.layout.activity_main);
@@ -110,7 +110,15 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		
 		
 		if (id == R.id.list) {
-
+			
+			/*
+			System.out.println("*****DELETING DB*******");
+			datasource.open();
+            MySQLiteHelper helper = new MySQLiteHelper(getApplicationContext());
+            helper.onUpgrade(datasource.getDatabase(), 4, 5);
+            datasource.close();
+            */
+			
 			Intent listintent = new Intent(this, ImageListActivity.class);
 			startActivity(listintent);
 
@@ -147,7 +155,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 			    @Override
 			    public void onClick(DialogInterface dialog, int which) {
 			    Log.d("CameraAppActivity", "#####which pressed" +which);
-			    Log.d("CameraAppActivity", "#####which pressed" +categoryItems[which]);
+			    Log.d("CameraAppActivity", "#####Category chosen: " +categoryItems[which]);
 			    chosenCategory = categoryItems[which];
 			      dialog.dismiss();
 			    }

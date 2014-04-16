@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.SyncStateContract.Helpers;
 import android.util.Log;
 
 
@@ -44,6 +45,11 @@ public class MyQuittiDatasource {
 	    dbHelper.close();
 	  }
 	  
+	  public SQLiteDatabase getDatabase()
+	  {
+		  return database; 
+		  
+	  }	  
 	  
 	  /*
 	   * @param comment
@@ -100,7 +106,11 @@ public class MyQuittiDatasource {
 	  }
 
 	  
-	  
+	  /**
+	   * Method for deleting the ReceiptImage
+	   * @Sami Nurmi
+	   * @param receipt
+	   */
 	  public void deleteReceipt(ReceiptImage receipt) {
 	    long id = receipt.getReceiptId();
 	    System.out.println("Receipt deleted with id: " + id);
@@ -108,6 +118,31 @@ public class MyQuittiDatasource {
 	        + " = " + id, null);
 	  }
 	  
+	  /**
+	   * Method for deleting the ReceiptImage
+	   * @Sami Nurmi
+	   * @param receipt
+	   */
+	  public void deleteCategory(long receiptId) {
+	    
+		Log.d("MyQuittiDatasource", "deleteCategory() category deleted with receiptid: " + receiptId);
+	    database.delete(MySQLiteHelper.TABLE_CATEGORY, MySQLiteHelper.COLUMN_CATEGORYRECEIPTID
+	        + " = " + receiptId, null);
+	  }
+	  /**
+	   * Method for deleting all of the receipts and categories
+	   * @Sami Nurmi
+	   * @param receipt
+	   */
+	  public void deleteReceiptAndCategories() {
+	    
+		  Log.d("MyQuittiDatasource", "deleteReceiptAndCategories() - deleting two tables ");
+		  this.open();
+		  database.delete(MySQLiteHelper.TABLE_CATEGORY, null, null);
+		  database.delete(MySQLiteHelper.TABLE_RECEIPTINFO, null, null);
+		  this.close();
+	  }
+	 
 	  
 	  /**
 	   * Returns a list of all receipts in phones memory
@@ -123,6 +158,7 @@ public class MyQuittiDatasource {
 	    cursor.moveToFirst();
 	    while (!cursor.isAfterLast()) {
 	      ReceiptImage receipt = cursorToReceiptImage(cursor);
+	      receipt.setCategory(getCategory(receipt.getReceiptId()));
 	      receipts.add(receipt);
 	      cursor.moveToNext();
 	    }
@@ -188,7 +224,7 @@ public class MyQuittiDatasource {
 		    cursor.close();
 		    // and database connection
 		    this.close();
-		    Log.d("MyQuittiDatasource", "44444>");
+		    Log.d("MyQuittiDatasource", "getReceiptWithPhotoname End");
 		    return receipt;
 		  }
 
@@ -222,7 +258,7 @@ public class MyQuittiDatasource {
 			        allCategoryColumns, MySQLiteHelper.COLUMN_CATEGORYRECEIPTID + " = " + receiptId, null,
 			        null, null, null);
 		  cursor.moveToFirst();
-		  System.out.println("CURSORIN PITUUS: " +cursor.getCount());
+		 
 		  if(cursor.getCount()>0){
 			  category = cursorToCategory(cursor);  
 			  
@@ -251,6 +287,7 @@ public class MyQuittiDatasource {
 		  Category newCategory = new Category();
 		  newCategory.setCategoryId(cursor.getLong(0));
 		  newCategory.setCategoryText(cursor.getString(1));
+		  System.out.println("CATEGORY: " +newCategory.getCategory());
 		  newCategory.setReceiptId(cursor.getLong(2));
 	    return newCategory;
 	  }

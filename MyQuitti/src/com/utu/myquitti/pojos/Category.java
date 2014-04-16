@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 /**
- * Category Pojo
+ * Category Pojo for keeping category information of the receipt
  * @author saminurmi
  *
  */

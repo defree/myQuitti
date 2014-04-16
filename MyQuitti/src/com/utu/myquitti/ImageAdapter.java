@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.utu.myquitti.pojos.Category;
 import com.utu.myquitti.pojos.ReceiptImage;
@@ -90,6 +91,14 @@ public class ImageAdapter extends BaseAdapter {
         
         //String cat = category.getCategoryText();
         
+        // ESA, tässä saat kaikki receiptit ja niiden categoryt! Poista Systemoutit sitten kun toimii
+        List<ReceiptImage> receipts = datasource.getAllReceipts();
+        for (int i = 0; i < receipts.size(); i++) {
+        	ReceiptImage temp = receipts.get(i);
+        	 
+			System.out.println("-----------------------------");
+        	System.out.println("ID: " +temp.receiptId + " Photo name: " +temp.getPhotoname() + "Category: " +temp.getCategory().getCategory());
+		}
 		String category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));;
 		
 		datasource.close();
