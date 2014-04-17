@@ -47,7 +47,7 @@ public class MyQuittiDatasource {
 	  
 	  public SQLiteDatabase getDatabase()
 	  {
-		  return database; 
+		  return database;   
 		  
 	  }	  
 	  
@@ -150,7 +150,8 @@ public class MyQuittiDatasource {
 	   * @return List
 	   */
 	  public List<ReceiptImage> getAllReceipts() {
-	    List<ReceiptImage> receipts = new ArrayList<ReceiptImage>();
+	    System.out.println("**********getAllReceipts getAllReceipts ************");
+		  List<ReceiptImage> receipts = new ArrayList<ReceiptImage>();
 
 	    Cursor cursor = database.query(MySQLiteHelper.TABLE_RECEIPTINFO,
 	        allColumns, null, null, null, null, null);
@@ -158,7 +159,9 @@ public class MyQuittiDatasource {
 	    cursor.moveToFirst();
 	    while (!cursor.isAfterLast()) {
 	      ReceiptImage receipt = cursorToReceiptImage(cursor);
-	      receipt.setCategory(getCategory(receipt.getReceiptId()));
+	      Category category = this.getCategory(receipt.getReceiptId());
+	      System.out.println("RECEIPTID----->" +receipt.getReceiptId());
+	      receipt.setCategory(category);
 	      receipts.add(receipt);
 	      cursor.moveToNext();
 	    }
@@ -251,6 +254,7 @@ public class MyQuittiDatasource {
 	  }
 	  
 	  private Category getCategory(long receiptId){
+		  System.out.println("########getCategory############");
 		  //fk_category_receiptinfo
 		  //Cursor c = db.rawQuery("SELECT * FROM tbl1 WHERE TRIM(name) = '"+name.trim()+"'", null);
 		  Category category = null;
@@ -258,7 +262,7 @@ public class MyQuittiDatasource {
 			        allCategoryColumns, MySQLiteHelper.COLUMN_CATEGORYRECEIPTID + " = " + receiptId, null,
 			        null, null, null);
 		  cursor.moveToFirst();
-		 
+		 System.out.println("CURSOR COUNT--->" +cursor.getCount());
 		  if(cursor.getCount()>0){
 			  category = cursorToCategory(cursor);  
 			  
@@ -287,8 +291,9 @@ public class MyQuittiDatasource {
 		  Category newCategory = new Category();
 		  newCategory.setCategoryId(cursor.getLong(0));
 		  newCategory.setCategoryText(cursor.getString(1));
-		  System.out.println("CATEGORY: " +newCategory.getCategory());
+		  System.out.println("CATEGORY: " +newCategory.getCategoryText());
 		  newCategory.setReceiptId(cursor.getLong(2));
+		  System.out.println("newCategory in cursorToCategory---->" +newCategory);
 	    return newCategory;
 	  }
 	 

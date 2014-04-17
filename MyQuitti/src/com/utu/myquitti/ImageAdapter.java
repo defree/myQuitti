@@ -112,8 +112,8 @@ public class ImageAdapter extends BaseAdapter {
         		
         	
         	
-			//System.out.println("-----------------------------");
-        	System.out.println("root: "+temp.getRootDirectory()+" ID: " +temp.receiptId + " Photo name: " +temp.getPhotoname() + "Category: " +temp.getCategory().getCategory());
+			System.out.println("-----------------------------");
+        	System.out.println("root: "+temp.getRootDirectory()+" ID: " +temp.receiptId + " Photo name: " +temp.getPhotoname() + "Category: " +temp.getCategory().getCategoryText());
 		}
 		//category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));;
 		
@@ -121,8 +121,8 @@ public class ImageAdapter extends BaseAdapter {
         //System.out.println(currentImage.getCategory());
         
         try {
-            if (currentImage.getCategory().getCategory() != null) {
-            	category = currentImage.getCategory().getCategory();
+            if (currentImage.getCategory().getCategoryText() != null) {
+            	category = currentImage.getCategory().getCategoryText();
             }
 		} catch (Exception e) {
 			// TODO: handle exception

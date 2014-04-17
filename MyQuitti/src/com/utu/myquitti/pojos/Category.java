@@ -13,7 +13,7 @@ public class Category implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String categoryText;
-	private String category;
+	
 	public long categoryId;
 	public long receiptId;
 	
@@ -29,18 +29,7 @@ public class Category implements Serializable {
 	public void setCategoryText(String categoryText) {
 		this.categoryText = categoryText;
 	}
-	/**
-	 * @return the category
-	 */
-	public String getCategory() {
-		return category;
-	}
-	/**
-	 * @param category the category to set
-	 */
-	public void setCategory(String category) {
-		this.category = category;
-	}
+	
 	/**
 	 * @return the categoryId
 	 */
