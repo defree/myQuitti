@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class ImageAdapter extends BaseAdapter {
 	ArrayList<String> f = new ArrayList<String>();// list of file paths
 	List<ReceiptImage> receipts;
 	ReceiptImage currentImage;
+	ReceiptImage temp;
 	File[] listFile;
 	boolean[] imagesselection;
 	Bitmap myBitmap;
@@ -39,7 +41,7 @@ public class ImageAdapter extends BaseAdapter {
     
     
     public ImageAdapter(Context c) {
-        context = c;
+        this.context = c;
         getFromSdcard();
         getFromDB();
     }
@@ -113,7 +115,7 @@ public class ImageAdapter extends BaseAdapter {
         
         for (int i = 0; i < receipts.size(); i++) {
         	
-        	ReceiptImage temp = receipts.get(i);
+        	temp = receipts.get(i);
         	
         	//Full path of image
         	String match = Environment.getExternalStorageDirectory().toString()+temp.getRootDirectory()+"/"+temp.getPhotoname();
@@ -191,22 +193,28 @@ public class ImageAdapter extends BaseAdapter {
 				}
 			}
 		});
-		/*
+		
 		holder.imageView.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				int id = v.getId();
-				Intent intent = new Intent();
-				intent.setAction(Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.parse("file://" + arrPath[id]), "image/*");
-				startActivity(intent);
+				
+				for (int i = 0; i < receipts.size(); i++) {
+					if (receipts.get(i).getPosition() == id) {
+						temp = receipts.get(i);
+					}
+				}
+				Intent intent = new Intent(context, FullImageActivity.class);
+				//intent.setAction(Intent.ACTION_VIEW);
+				intent.putExtra("receiptObject",temp);
+				context.startActivity(intent);
 			}
-		});*/
+		});
+		
 		System.out.println("receiptid: "+currentImage.receiptId+" Position: "+position+" Category: "+category);
-		holder.textView.setText(category);	//Set category text
+		
 
-		holder.checkBox.setChecked(currentImage.isChecked());
+		
 		
 		//Bitmap-setting, hopefully a smaller image
 		BitmapFactory.Options bfo = new BitmapFactory.Options();
@@ -224,6 +232,9 @@ public class ImageAdapter extends BaseAdapter {
 		
         //myBitmap = BitmapFactory.decodeFile(f.get(position));
 		holder.imageView.setImageBitmap(myBitmap);	//Set image
+		holder.imageView.setMinimumWidth(120);
+		holder.textView.setText(category);	//Set category text
+		holder.checkBox.setChecked(currentImage.isChecked());
 		
 		holder.id = position;
 

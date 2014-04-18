@@ -7,24 +7,32 @@
 
     <ImageView
         android:id="@+id/grid_item_image"
-        android:layout_width="120dp"
-        android:layout_height="150dp"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
         android:contentDescription="@string/desc"
         android:src="@drawable/ic_launcher" />
-
-    <TextView
-        android:id="@+id/grid_item_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="26dp"
-        android:gravity="center|left"
-        android:text="@string/category_text"
-        android:textSize="15sp" />
 
     <CheckBox
         android:id="@+id/grid_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-200dp"
         android:text="@string/checkbox" />
+
+    <TextView
+        android:id="@+id/grid_item_label"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:background="#99a8b3b9"
+        android:lines="1"
+        android:maxLines="1"
+        android:maxWidth="116dp"
+        android:minWidth="116dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="@string/category_text"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp" />
 
 </LinearLayout>

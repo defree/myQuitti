@@ -27,4 +27,6 @@
     <string name="category_text">Category</string>
     <string name="checkbox"></string>
     
+    <string name="date_text">Date</string>
+    
 </resources>

@@ -2,6 +2,7 @@ package com.utu.myquitti;
 
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
 import com.utu.myquitti.pojos.ReceiptImage;
@@ -53,20 +54,22 @@ public class ImageListActivity extends Activity {
 	    //imagegrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE); //API 11->
 
         
-	    
+	    /*
         imagegrid.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                    int position, long id) {
-            	
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+            	receipts = imageAdapter.receipts;
                 // Sending image id to FullScreenActivity
                 Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
                 // passing array index
                 i.putExtra("id", position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("receiptser",(Serializable) receipts);
+                i.putExtras("serbundle", bundle);
                 startActivity(i);
             }
         });
-        
+        */
         delete = (Button)findViewById(R.id.deletebutton);
         
         delete.setOnClickListener(new View.OnClickListener() {
