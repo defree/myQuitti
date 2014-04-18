@@ -1,10 +1,16 @@
 package com.utu.myquitti;
 
 
+import java.io.File;
+import java.util.List;
+
+import com.utu.myquitti.pojos.ReceiptImage;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,11 +30,12 @@ public class ImageListActivity extends Activity {
 
 	private int count;
 	private Bitmap[] thumbnails;
-	private boolean[] thumbnailsselection;
+	private boolean[] imagesselection;
 	private String[] arrPath;
 	private ImageAdapter imageAdapter;
 	private Button delete;
-
+	private List<ReceiptImage> receipts;
+	private MyQuittiDatasource datasource;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -65,16 +72,26 @@ public class ImageListActivity extends Activity {
         delete.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				thumbnailsselection = imageAdapter.thumbnailsselection;
-				final int len = thumbnailsselection.length;
+				
+				datasource = new MyQuittiDatasource(getBaseContext());
+				datasource.open();
+				File imagefile;
+				String filelocation;
+				//imagesselection = imageAdapter.imagesselection;
+				receipts = imageAdapter.receipts;
+				ReceiptImage temp;
+				
 				int cnt = 0;
 				String selectImages = "";
-				for (int i =0; i<len; i++)
+				for (int i =0; i<receipts.size(); i++)
 				{
-					if (thumbnailsselection[i]){
+					temp = receipts.get(i);
+					if (temp.isChecked()){
 						cnt++;
-						selectImages = selectImages + imageAdapter.f.get(i) + "|";
+						datasource.deleteReceipt(temp); //Remove from db
+						filelocation = Environment.getExternalStorageDirectory().toString()+temp.getRootDirectory()+"/"+temp.getPhotoname();
+						File file = new File(filelocation);
+						boolean deleted = file.delete(); //Remove file from storage
 					}
 				}
 				if (cnt == 0){
@@ -83,10 +100,14 @@ public class ImageListActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(getApplicationContext(),
-							"Receipts deleted.",
+							cnt + " receipts deleted.",
 							Toast.LENGTH_LONG).show();
 					Log.d("SelectedImages", selectImages);
 				}
+				datasource.close();
+				Intent intent = getIntent();
+				finish();
+				startActivity(intent);
 			}
 		});
 	}

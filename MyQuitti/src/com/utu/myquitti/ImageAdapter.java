@@ -30,8 +30,9 @@ public class ImageAdapter extends BaseAdapter {
 
 	ArrayList<String> f = new ArrayList<String>();// list of file paths
 	List<ReceiptImage> receipts;
+	ReceiptImage currentImage;
 	File[] listFile;
-	boolean[] thumbnailsselection;
+	boolean[] imagesselection;
 	Bitmap myBitmap;
 	
     private Context context;
@@ -76,7 +77,7 @@ public class ImageAdapter extends BaseAdapter {
 
 	            }
 	        }
-	    thumbnailsselection = new boolean [f.size()];
+	    imagesselection = new boolean [f.size()];
 	}
     
 	public void getFromDB() {
@@ -91,7 +92,7 @@ public class ImageAdapter extends BaseAdapter {
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		ReceiptImage currentImage = null;
+		currentImage = null;
 		
 		View gridView;
 		TextView textView;
@@ -116,17 +117,18 @@ public class ImageAdapter extends BaseAdapter {
         	
         	//Full path of image
         	String match = Environment.getExternalStorageDirectory().toString()+temp.getRootDirectory()+"/"+temp.getPhotoname();
-        	System.out.println(match);
-        	System.out.println(f.get(position));
+        	//System.out.println(match);
+        	//System.out.println(f.get(position));
         	
         	if (f.get(position).equals(match)) {
         		currentImage = receipts.get(i);
+        		currentImage.setPosition(position);
         	}
         		
         	
         	
-			System.out.println("-----------------------------");
-        	System.out.println("root: "+temp.getRootDirectory()+" ID: " +temp.receiptId + " Photo name: " +temp.getPhotoname() + "Category: " +temp.getCategory().getCategoryText());
+			//System.out.println("-----------------------------");
+        	//System.out.println("root: "+temp.getRootDirectory()+" ID: " +temp.receiptId + " Photo name: " +temp.getPhotoname() + "Category: " +temp.getCategory().getCategoryText());
 		}
 		//category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));;
 		
@@ -172,12 +174,20 @@ public class ImageAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				CheckBox cb = (CheckBox) v;
 				int id = cb.getId();
-				if (thumbnailsselection[id]){
-					cb.setChecked(false);
-					thumbnailsselection[id] = false;
-				} else {
-					cb.setChecked(true);
-					thumbnailsselection[id] = true;
+				System.out.println(id);
+				
+				for (int i = 0; i < receipts.size(); i++) {
+					if (receipts.get(i).getPosition() == id) {
+						if (receipts.get(i).isChecked()){
+							cb.setChecked(false);
+							//imagesselection[id] = false;
+							receipts.get(i).setChecked(false);
+						} else {
+							cb.setChecked(true);
+							//imagesselection[id] = true;
+							receipts.get(i).setChecked(true);
+						}
+					}
 				}
 			}
 		});
@@ -193,16 +203,17 @@ public class ImageAdapter extends BaseAdapter {
 				startActivity(intent);
 			}
 		});*/
-		
+		System.out.println("receiptid: "+currentImage.receiptId+" Position: "+position+" Category: "+category);
 		holder.textView.setText(category);	//Set category text
 
-		holder.checkBox.setChecked(thumbnailsselection[position]);
+		holder.checkBox.setChecked(currentImage.isChecked());
 		
 		//Bitmap-setting, hopefully a smaller image
 		BitmapFactory.Options bfo = new BitmapFactory.Options();
         bfo.inSampleSize = 4;
 		
 		try {
+			
 			myBitmap = BitmapFactory.decodeFile(f.get(position),bfo);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

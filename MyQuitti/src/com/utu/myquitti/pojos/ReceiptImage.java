@@ -35,6 +35,7 @@ public class ReceiptImage implements Serializable {
 	private String extraInfo;
 	private Bitmap icon;
 	private boolean isChecked;
+	private int position;	//Position in the window, assigned every time the window is loaded
 
 	/**
 	 * @return the imageByteArray
@@ -260,7 +261,21 @@ public class ReceiptImage implements Serializable {
 	public void setChecked(boolean isChecked) {
 		this.isChecked = isChecked;
 	}
+	
+	/**
+	 * @return the position
+	 */
+	public int getPosition() {
+		return position;
+	}
 
+	/**
+	 * @param set position
+	 *            
+	 */
+	public void setPosition(int position) {
+		this.position = position;
+	}
 	/**
 	 * @return the directory
 	 */
