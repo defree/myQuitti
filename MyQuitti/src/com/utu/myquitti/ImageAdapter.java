@@ -13,6 +13,7 @@ import com.utu.myquitti.pojos.Category;
 import com.utu.myquitti.pojos.ReceiptImage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,8 +29,9 @@ import android.widget.TextView;
 public class ImageAdapter extends BaseAdapter {
 
 	ArrayList<String> f = new ArrayList<String>();// list of file paths
+	List<ReceiptImage> receipts;
 	File[] listFile;
-	
+	boolean[] thumbnailsselection;
 	Bitmap myBitmap;
 	
     private Context context;
@@ -37,6 +40,7 @@ public class ImageAdapter extends BaseAdapter {
     public ImageAdapter(Context c) {
         context = c;
         getFromSdcard();
+        getFromDB();
     }
 
     public int getCount() {
@@ -71,9 +75,18 @@ public class ImageAdapter extends BaseAdapter {
 	                f.add(listFile[i].getAbsolutePath());
 
 	            }
-	        }		
+	        }
+	    thumbnailsselection = new boolean [f.size()];
 	}
     
+	public void getFromDB() {
+		MyQuittiDatasource datasource;
+    	datasource = new MyQuittiDatasource(context);
+        datasource.open();
+        receipts = datasource.getAllReceipts();
+        datasource.close();
+	}
+	
 	public View getView(int position, View view, ViewGroup parent) {
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,10 +98,10 @@ public class ImageAdapter extends BaseAdapter {
 		ImageView imageView;
 		//ImageView iview;
 		String category = "";
+		ViewHolder holder;
 		
-		MyQuittiDatasource datasource;
-    	datasource = new MyQuittiDatasource(context);
-        datasource.open();
+		
+
 		
         //Category category = new Category();
         //category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));
@@ -96,7 +109,7 @@ public class ImageAdapter extends BaseAdapter {
         //String cat = category.getCategoryText();
         
         // ESA, tässä saat kaikki receiptit ja niiden categoryt! Poista Systemoutit sitten kun toimii
-        List<ReceiptImage> receipts = datasource.getAllReceipts();
+        
         for (int i = 0; i < receipts.size(); i++) {
         	
         	ReceiptImage temp = receipts.get(i);
@@ -106,7 +119,7 @@ public class ImageAdapter extends BaseAdapter {
         	System.out.println(match);
         	System.out.println(f.get(position));
         	
-        	if (f.get(position) == match) {
+        	if (f.get(position).equals(match)) {
         		currentImage = receipts.get(i);
         	}
         		
@@ -121,83 +134,97 @@ public class ImageAdapter extends BaseAdapter {
         //System.out.println(currentImage.getCategory());
         
         try {
-            if (currentImage.getCategory().getCategoryText() != null) {
-            	category = currentImage.getCategory().getCategoryText();
-            }
+        	
+        	category = currentImage.getCategory().getCategoryText();
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+
         
-        
-		datasource.close();
+		
 		
 		if (view == null) {
 			
-			//For serialization
-			//iview = new ImageView(context);
-			//FileInputStream filein = null; 
-			//ObjectInputStream in = null;
+			holder = new ViewHolder();
 			
 			gridView = inflater.inflate(R.layout.activity_list_extend, null);
+			
+			holder.imageView = (ImageView) gridView.findViewById(R.id.grid_item_image);
+			
+			holder.textView = (TextView) gridView.findViewById(R.id.grid_item_label);
+			
+			holder.checkBox = (CheckBox) gridView.findViewById(R.id.grid_item_checkbox);
 
-			textView = (TextView) gridView.findViewById(R.id.grid_item_label);
-			//Set category text
-			textView.setText(category);
-			
-			imageView = (ImageView) gridView.findViewById(R.id.grid_item_image);
-			
-			//Bitmap-setting, hopefully a smaller image
-			BitmapFactory.Options bfo = new BitmapFactory.Options();
-            bfo.inSampleSize = 4;
-			
-			//System.out.println(f.get(position).replace("/storage/emulated/0/receipts/", ""));
-			
-			try {
-				myBitmap = BitmapFactory.decodeFile(f.get(position),bfo);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			gridView.setTag(holder);
 
-			
-			
-	        //myBitmap = BitmapFactory.decodeFile(f.get(position));
-	        //Set image
-			imageView.setImageBitmap(myBitmap);
-			
-			
-			//imageView.setLayoutParams(new GridView.LayoutParams(300,450));
-			
-			//iview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			//iview.setPadding(5, 5, 5, 5);
 		} else {
 			gridView = (View) view;
+			holder = (ViewHolder) gridView.getTag();
+			
 		}
-					
+		
+		holder.checkBox.setId(position);
+		holder.imageView.setId(position);
+		holder.checkBox.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				CheckBox cb = (CheckBox) v;
+				int id = cb.getId();
+				if (thumbnailsselection[id]){
+					cb.setChecked(false);
+					thumbnailsselection[id] = false;
+				} else {
+					cb.setChecked(true);
+					thumbnailsselection[id] = true;
+				}
+			}
+		});
+		/*
+		holder.imageView.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				int id = v.getId();
+				Intent intent = new Intent();
+				intent.setAction(Intent.ACTION_VIEW);
+				intent.setDataAndType(Uri.parse("file://" + arrPath[id]), "image/*");
+				startActivity(intent);
+			}
+		});*/
+		
+		holder.textView.setText(category);	//Set category text
+
+		holder.checkBox.setChecked(thumbnailsselection[position]);
+		
+		//Bitmap-setting, hopefully a smaller image
+		BitmapFactory.Options bfo = new BitmapFactory.Options();
+        bfo.inSampleSize = 4;
+		
+		try {
+			myBitmap = BitmapFactory.decodeFile(f.get(position),bfo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//System.out.println(f.get(position).replace("/storage/emulated/0/receipts/", ""));
+		
+        //myBitmap = BitmapFactory.decodeFile(f.get(position));
+		holder.imageView.setImageBitmap(myBitmap);	//Set image
+		
+		holder.id = position;
 
 		return gridView;
 	}
-	/* //For serialization, now not used
-	public void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
-	    //title = (String)in.readObject();
-	    //sourceWidth = currentWidth = in.readInt();
-	    //sourceHeight = currentHeight = in.readInt();
-
-	    ReceiptImage bitmapDataObject = (ReceiptImage)in.readObject();
-	    myBitmap = BitmapFactory.decodeByteArray(bitmapDataObject.imageByteArray, 0, bitmapDataObject.imageByteArray.length);
-
-	    //sourceImage = Bitmap.createBitmap(sourceWidth, sourceHeight, Bitmap.Config.ARGB_8888);
-	    //myBitmap = Bitmap.createBitmap(720, 1280, Bitmap.Config.ARGB_8888);
-
-	    //sourceCanvas = new Canvas(sourceImage);
-	    //currentCanvas = new Canvas(currentImage);
-
-	    //currentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-	    //thumbnailPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-	    //thumbnailPaint.setARGB(255, 200, 200, 200);
-	    //thumbnailPaint.setStyle(Paint.Style.FILL);
+	
+	class ViewHolder {
+		ImageView imageView;
+		TextView textView;
+		CheckBox checkBox;
+		
+		int id;
 	}
-    
-	*/
+	
 }
