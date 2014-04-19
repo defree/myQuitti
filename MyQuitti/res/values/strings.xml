@@ -11,6 +11,7 @@
     <string name="title_activity_my_quitti_camera">MyQuittiCameraActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="no_category_text">No category set</string>
 	
     <string name="category_prompt">Choose a category</string>
  
@@ -23,7 +24,6 @@
     </string-array>
     
     <string name="deletebutton">Delete</string>
-    
     <string name="category_text">Category</string>
     <string name="checkbox"></string>
     

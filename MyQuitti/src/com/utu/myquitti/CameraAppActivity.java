@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+
 //import com.utu.myquitti.pojos.BitmapDataObject;
 //import com.utu.myquitti.pojos.Canvas;
 import com.utu.myquitti.pojos.ImageArray;
@@ -26,6 +27,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -43,7 +45,7 @@ import android.widget.Toast;
 
 public class CameraAppActivity extends Activity implements View.OnClickListener {
 
-	Button list,take,category;
+	Button list,take,category,settings;
 	ImageView pic;
 	Intent i;
 	int cameraData = 0;
@@ -81,6 +83,8 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		list = (Button) findViewById(R.id.list);
 		take = (Button) findViewById(R.id.tak);
 		category = (Button) findViewById(R.id.category);
+		settings = (Button) findViewById(R.id.settings_button);
+		
 		
 		pic = (ImageView) findViewById(R.id.image);
 

@@ -24,25 +24,66 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_margin="5dp"
-            android:text="@string/category" />
-        
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/white_button"
+            android:minHeight="40dp"
+            android:text="@string/category"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/tak"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/take" />
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/white_button"
+            android:minHeight="40dp"
+            android:text="@string/take"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_margin="5dp"
-            android:text="@string/list" />
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/white_button"
+            android:minHeight="40dp"
+            android:text="@string/list"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
-    
+    <LinearLayout
+        android:id="@+id/topframe"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#99a8b3b9" >
+
+        <Button
+            android:id="@+id/settings_button"
+            android:layout_width="43dp"
+            android:layout_height="37dp"
+            android:background="@drawable/ic_sysbar_quicksettings"
+			/>
+        
+        <TextView
+            android:id="@+id/top_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="@string/no_category_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
 
 </FrameLayout>
