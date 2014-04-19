@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
+
 //import com.utu.myquitti.pojos.BitmapDataObject;
 //import com.utu.myquitti.pojos.Canvas;
 import com.utu.myquitti.pojos.ImageArray;
@@ -38,6 +39,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -46,6 +48,7 @@ import android.widget.Toast;
 public class CameraAppActivity extends Activity implements View.OnClickListener {
 
 	Button list,take,category,settings;
+	TextView categorytext;
 	ImageView pic;
 	Intent i;
 	int cameraData = 0;
@@ -84,7 +87,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		take = (Button) findViewById(R.id.tak);
 		category = (Button) findViewById(R.id.category);
 		settings = (Button) findViewById(R.id.settings_button);
-		
+		categorytext = (TextView) findViewById(R.id.top_category);
 		
 		pic = (ImageView) findViewById(R.id.image);
 
@@ -153,13 +156,14 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 			        android.R.layout.simple_spinner_dropdown_item, categoryItems);
 			
 			new AlertDialog.Builder(this)
-			  .setTitle("the prompt")
+			  .setTitle("Choose category")
 			  .setAdapter(adapter, new DialogInterface.OnClickListener() {
 
 			    @Override
 			    public void onClick(DialogInterface dialog, int which) {
 			    Log.d("CameraAppActivity", "#####which pressed" +which);
 			    Log.d("CameraAppActivity", "#####Category chosen: " +categoryItems[which]);
+			    categorytext.setText(categoryItems[which]);
 			    chosenCategory = categoryItems[which];
 			      dialog.dismiss();
 			    }
