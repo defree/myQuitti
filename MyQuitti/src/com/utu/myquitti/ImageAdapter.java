@@ -241,12 +241,6 @@ public class ImageAdapter extends BaseAdapter {
 		return gridView;
 	}
 	
-	class ViewHolder {
-		ImageView imageView;
-		TextView textView;
-		CheckBox checkBox;
-		
-		int id;
-	}
+	
 	
 }
