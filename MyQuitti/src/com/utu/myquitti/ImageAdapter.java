@@ -30,24 +30,26 @@ import android.widget.TextView;
 public class ImageAdapter extends BaseAdapter {
 
 	ArrayList<String> f = new ArrayList<String>();// list of file paths
-	List<ReceiptImage> receipts;
+	List<ReceiptImage> receipts = ImageListActivity.getReceipts();
 	ReceiptImage currentImage;
 	ReceiptImage temp;
 	File[] listFile;
 	boolean[] imagesselection;
 	Bitmap myBitmap;
+	String envPath = Environment.getExternalStorageDirectory().toString();
+	String bitMapPath;
 	
     private Context context;
     
     
     public ImageAdapter(Context c) {
         this.context = c;
-        getFromSdcard();
-        getFromDB();
+        //getFromSdcard();
+        //getFromDB();
     }
 
     public int getCount() {
-        return f.size();
+        return receipts.size();
     }
 
     public Object getItem(int position) {
@@ -62,7 +64,7 @@ public class ImageAdapter extends BaseAdapter {
     public String getItemLoc(int position) {
     	return f.get(position);
     }
-    
+    /*
 	public void getFromSdcard()
 	{
 		File getfile= new File(android.os.Environment.getExternalStorageDirectory(),"receipts");
@@ -81,7 +83,7 @@ public class ImageAdapter extends BaseAdapter {
 	        }
 	    imagesselection = new boolean [f.size()];
 	}
-    
+    */
 	public void getFromDB() {
 		MyQuittiDatasource datasource;
     	datasource = new MyQuittiDatasource(context);
@@ -112,7 +114,7 @@ public class ImageAdapter extends BaseAdapter {
         //String cat = category.getCategoryText();
         
         // ESA, tässä saat kaikki receiptit ja niiden categoryt! Poista Systemoutit sitten kun toimii
-        
+        /*
         for (int i = 0; i < receipts.size(); i++) {
         	
         	temp = receipts.get(i);
@@ -132,6 +134,9 @@ public class ImageAdapter extends BaseAdapter {
 			//System.out.println("-----------------------------");
         	//System.out.println("root: "+temp.getRootDirectory()+" ID: " +temp.receiptId + " Photo name: " +temp.getPhotoname() + "Category: " +temp.getCategory().getCategoryText());
 		}
+		*/
+		currentImage = receipts.get(position);
+		currentImage.setPosition(position);
 		//category = datasource.getSingleCategory(f.get(position).replace("/storage/emulated/0/receipts/", ""));;
 		
 
@@ -221,8 +226,9 @@ public class ImageAdapter extends BaseAdapter {
         bfo.inSampleSize = 4;
 		
 		try {
-			
-			myBitmap = BitmapFactory.decodeFile(f.get(position),bfo);
+			bitMapPath = envPath+currentImage.getRootDirectory()+"/"+currentImage.getPhotoname();
+			myBitmap = BitmapFactory.decodeFile(bitMapPath,bfo);
+			//myBitmap = BitmapFactory.decodeFile(f.get(position),bfo);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

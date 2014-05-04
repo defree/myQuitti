@@ -3,11 +3,15 @@ package com.utu.myquitti;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.utu.myquitti.pojos.ReceiptImage;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -35,7 +39,8 @@ public class ImageListActivity extends Activity {
 	private String[] arrPath;
 	private ImageAdapter imageAdapter;
 	private Button delete;
-	private List<ReceiptImage> receipts;
+	private Button sort;
+	private static List<ReceiptImage> receipts;
 	private MyQuittiDatasource datasource;
 
 	/** Called when the activity is first created. */
@@ -47,6 +52,10 @@ public class ImageListActivity extends Activity {
 	    Log.d("ImageListActivity", "#####ImageListActivity.onCreate()#####");
 	    
 	    GridView imagegrid = (GridView) findViewById(R.id.gridview);
+	    
+	    getReceiptsFromDB();
+	    
+	    
 	    
 	    final ImageAdapter imageAdapter = new ImageAdapter(this);
 	    
@@ -71,6 +80,7 @@ public class ImageListActivity extends Activity {
         });
         */
         delete = (Button)findViewById(R.id.deletebutton);
+        sort = (Button)findViewById(R.id.sortbutton);
         
         delete.setOnClickListener(new View.OnClickListener() {
 
@@ -81,7 +91,7 @@ public class ImageListActivity extends Activity {
 				File imagefile;
 				String filelocation;
 				//imagesselection = imageAdapter.imagesselection;
-				receipts = imageAdapter.receipts;
+
 				ReceiptImage temp;
 				
 				int cnt = 0;
@@ -112,7 +122,45 @@ public class ImageListActivity extends Activity {
 				finish();
 				startActivity(intent);
 			}
-		});
+		
+        });
+        
+        sort.setOnClickListener(new View.OnClickListener() { 
+        	
+        	public void onClick(View v) {
+        		final CharSequence[] items = {"Category", "Date"};
+
+        		AlertDialog.Builder builder = new AlertDialog.Builder(ImageListActivity.this);
+        		builder.setTitle("Sort by:");
+        		builder.setItems(items, new DialogInterface.OnClickListener() {
+        		    public void onClick(DialogInterface dialog, int i) {
+        		        Toast.makeText(getApplicationContext(), "Sorting by "+items[i], Toast.LENGTH_SHORT).show();
+        		        if (items[i] == "Category"){
+        		        	Collections.sort(receipts, ReceiptImage.CategoryComparator);
+        		        }
+        		        else if (items[i] == "Date"){
+        		        	//jos date
+        		        }
+    					Intent intent = getIntent();
+    					finish();
+    					startActivity(intent);
+        		    }
+        		});
+        		AlertDialog alert = builder.create();
+        		alert.show();
+        	}
+        });
+               
+	}
+	
+	private void getReceiptsFromDB() {
+		datasource = new MyQuittiDatasource(getBaseContext());
+        datasource.open();
+        receipts = datasource.getAllReceipts();
+        datasource.close();
+	}
+	public static List<ReceiptImage> getReceipts() {
+		return receipts;
 	}
 
 }

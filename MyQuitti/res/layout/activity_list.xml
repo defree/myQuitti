@@ -4,25 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="match_parent"
-        android:layout_height="480dp"
-        android:layout_above="@+id/deletebutton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:padding="10dp"
-        android:scrollbarStyle="insideOverlay"
-        android:stretchMode="columnWidth" />
-
-    <Button
-        android:id="@+id/deletebutton"
+    <RelativeLayout
+        android:id="@+id/itemlisttop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/gridview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+        <Button
+            android:id="@+id/deletebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/deletebutton"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/sortbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/sort"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="480dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="@string/deletebutton" />
+        android:numColumns="3"
+        android:padding="10dp"
+        android:scrollbarStyle="insideOverlay"
+        android:stretchMode="columnWidth" >
+
+    </GridView>
 
 </RelativeLayout>

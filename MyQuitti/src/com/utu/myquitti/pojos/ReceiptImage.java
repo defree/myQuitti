@@ -3,6 +3,7 @@ package com.utu.myquitti.pojos;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import android.graphics.Bitmap;
 
@@ -14,7 +15,7 @@ import android.graphics.Bitmap;
  * 
  * @author saminurmi
  */
-public class ReceiptImage implements Serializable {
+public class ReceiptImage implements Serializable, Comparable<ReceiptImage> {
 
 	private static final long serialVersionUID = 1L;
 	public byte[] imageByteArray;
@@ -304,5 +305,18 @@ public class ReceiptImage implements Serializable {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+	
+    public int compareTo(ReceiptImage re) {
+    	//Sort receipts by receiptId
+        return (int) (this.receiptId - re.receiptId);
+    }
+	
+    public static Comparator<ReceiptImage> CategoryComparator = new Comparator<ReceiptImage>() {
+    	//Sort receipts by Category
+        @Override
+        public int compare(ReceiptImage r1, ReceiptImage r2) {
+            return r1.getCategory().getCategoryText().compareTo(r2.getCategory().getCategoryText());
+        }
+    }; 
 
 }

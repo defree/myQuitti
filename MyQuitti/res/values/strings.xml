@@ -23,8 +23,10 @@
        
     </string-array>
     
-    <string name="deletebutton">Delete</string>
+    <string name="deletebutton">Delete selected</string>
+    <string name="sort">Sort</string>
     <string name="category_text">Category</string>
     <string name="date_text">Date</string>
     <string name="checkbox">CheckBoxTEST</string>
+    <string name="imagelistcheckbox"></string>
 </resources>
