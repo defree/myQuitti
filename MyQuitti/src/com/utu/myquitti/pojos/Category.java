@@ -13,10 +13,35 @@ public class Category implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String categoryText;
+	private boolean selected = false;
 	
 	public long categoryId;
 	public long receiptId;
 	
+	
+	
+	public Category(String categoryText, boolean selected, long categoryId,
+			long receiptId) {
+		super();
+		this.categoryText = categoryText;
+		this.selected = selected;
+		this.categoryId = categoryId;
+		this.receiptId = receiptId;
+	}
+	
+	
+	public Category(String categoryText, boolean selected) {
+		super();
+		this.categoryText = categoryText;
+		this.selected = selected;
+	}
+
+
+	public Category() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	/**
 	 * @return the categoryText
 	 */
@@ -53,6 +78,18 @@ public class Category implements Serializable {
 	 */
 	public void setReceiptId(long receiptId) {
 		this.receiptId = receiptId;
+	}
+	/**
+	 * @return the selected
+	 */
+	public boolean isSelected() {
+		return selected;
+	}
+	/**
+	 * @param selected the selected to set
+	 */
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 	
 }

@@ -25,8 +25,6 @@
     
     <string name="deletebutton">Delete</string>
     <string name="category_text">Category</string>
-    <string name="checkbox"></string>
-    
     <string name="date_text">Date</string>
-    
+    <string name="checkbox">CheckBoxTEST</string>
 </resources>

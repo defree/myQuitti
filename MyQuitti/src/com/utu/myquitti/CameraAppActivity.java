@@ -15,6 +15,7 @@ import java.util.Date;
 
 
 
+import com.utu.myquitti.pojos.Category;
 //import com.utu.myquitti.pojos.BitmapDataObject;
 //import com.utu.myquitti.pojos.Canvas;
 import com.utu.myquitti.pojos.ImageArray;
@@ -24,6 +25,7 @@ import com.utu.myquitti.pojos.ReceiptImage;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,11 +36,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +75,8 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     private String[] categoryItems;
     private String chosenCategory;
     
+    MyCustomAdapter dataAdapter = null;
+    
     @Override    
 	protected void onCreate(Bundle b) {
     	
@@ -77,6 +86,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     	
     	super.onCreate(b);
 		setContentView(R.layout.activity_main);
+		displayCategoryListView();
 		Log.d("CameraAppActivity", "#####CameraAppActivity.onCreate()#####");
 		
 		
@@ -238,23 +248,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		}
 
     }
-  /*  //For serialization, now not used
-	private void writeObject(ObjectOutputStream out) throws IOException{
-	    //out.writeObject(title);
-	    //out.writeInt(width);
-	    //out.writeInt(height);
-
-	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	    mPhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
-	    ReceiptImage bitmapDataObject = new ReceiptImage();     
-	    bitmapDataObject.imageByteArray = stream.toByteArray();
-
-	    out.writeObject(bitmapDataObject);
-	}
-	*/
-	/** Included for serialization - read this object from the supplied input stream. */
-
-    
+  
     
     
     /**
@@ -267,4 +261,43 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     	
     	
     }
+    private void displayCategoryListView() {
+    	  
+    	System.out.println("#########displayCategoryListView() ###############");
+    	Log.d("CameraAppActivity", "##### 1");
+    	
+    	  //Array list of countries
+    	  ArrayList<Category> categoryList = new ArrayList<Category>();
+    	  Category category1 = new Category("category1",false);
+    	  categoryList.add(category1);
+    	  Category category2 = new Category("category2",false);
+    	  categoryList.add(category2);
+    	  Category category3 = new Category("category3",false);
+    	  
+    	  Log.d("CameraAppActivity", "##### 2");
+    	  //create an ArrayAdaptar from the String Array
+    	  dataAdapter = new MyCustomAdapter(this,
+    	    R.layout.categorylist, categoryList);
+    	  Log.d("CameraAppActivity", "##### 2,5");
+
+    	  ListView listView = (ListView) findViewById(R.id.listView1);
+    	  Log.d("CameraAppActivity", "##### 2,6");
+    	  // Assign adapter to ListView
+    	  listView.setAdapter(dataAdapter);
+    	  
+    	  Log.d("CameraAppActivity", "##### 3");
+    	  listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+    	   public void onItemClick(AdapterView parent, View view, int position, long id) {
+    	    // When clicked, show a toast with the TextView text
+    	    Category category = (Category) parent.getItemAtPosition(position);
+    	    Toast.makeText(getApplicationContext(),
+    	      "Clicked on Row: " + category.getCategoryText(),
+    	      Toast.LENGTH_LONG).show();
+    	   }
+    	  });
+    	  
+    	 }
+    
+    
+   
 }

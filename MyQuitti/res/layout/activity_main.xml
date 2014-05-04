@@ -59,7 +59,6 @@
             android:text="@string/list"
             android:textColor="#ffffff"
             android:textStyle="bold" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -72,9 +71,8 @@
             android:id="@+id/settings_button"
             android:layout_width="43dp"
             android:layout_height="37dp"
-            android:background="@drawable/ic_sysbar_quicksettings"
-			/>
-        
+            android:background="@drawable/ic_sysbar_quicksettings" />
+
         <TextView
             android:id="@+id/top_category"
             android:layout_width="wrap_content"
@@ -83,7 +81,18 @@
             android:text="@string/no_category_text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF" />
-
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
+
+    <include
+        android:id="@+id/categoryListView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        layout="@layout/categorylist" />
 
 </FrameLayout>
