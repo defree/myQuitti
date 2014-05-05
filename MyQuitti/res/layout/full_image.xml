@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/desc"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher" 
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/category_text"

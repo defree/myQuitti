@@ -76,9 +76,10 @@
 
         <Button
             android:id="@+id/settings_button"
-            android:layout_width="43dp"
-            android:layout_height="37dp"
-            android:background="@drawable/ic_sysbar_quicksettings" />
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/settings" />
 
         <TextView
             android:id="@+id/top_category"
@@ -88,6 +89,7 @@
             android:text="@string/no_category_text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF" />
+
     </LinearLayout>
 
 </RelativeLayout>
