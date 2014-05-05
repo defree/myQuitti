@@ -99,7 +99,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		settings = (Button) findViewById(R.id.settings_button);
 		categorytext = (TextView) findViewById(R.id.top_category);
 		
-		pic = (ImageView) findViewById(R.id.image);
+		//!!!!!pic = (ImageView) findViewById(R.id.image);
 
 		list.setOnClickListener(this);
 		take.setOnClickListener(this);
@@ -202,7 +202,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 					
 					mPhoto = android.provider.MediaStore.Images.Media.getBitmap(cr, mUri);
 					
-					((ImageView)findViewById(R.id.image)).setImageBitmap(mPhoto);
+					//!!!!!((ImageView)findViewById(R.id.image)).setImageBitmap(mPhoto);
 					
 					
 					savedImage.setRootDirectory(Environment.getExternalStorageDirectory().toString());
@@ -273,6 +273,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     	  Category category2 = new Category("category2",false);
     	  categoryList.add(category2);
     	  Category category3 = new Category("category3",false);
+    	  categoryList.add(category3);
     	  
     	  Log.d("CameraAppActivity", "##### 2");
     	  //create an ArrayAdaptar from the String Array

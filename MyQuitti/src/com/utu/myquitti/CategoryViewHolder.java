@@ -6,12 +6,7 @@ import android.widget.TextView;
 
 public class CategoryViewHolder {
 
-	
-	
 	CheckBox categoryId;
 	TextView categoryText;
-	//TextView code;
-	//CheckBox name;
-	
-	
+		
 }
