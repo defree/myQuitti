@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.StreamCorruptedException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class ImageAdapter extends BaseAdapter {
 	    imagesselection = new boolean [f.size()];
 	}
     */
-	public void getFromDB() {
+	public void getFromDB() throws ParseException {
 		MyQuittiDatasource datasource;
     	datasource = new MyQuittiDatasource(context);
         datasource.open();

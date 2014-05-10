@@ -97,7 +97,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		take = (Button) findViewById(R.id.tak);
 		category = (Button) findViewById(R.id.category);
 		settings = (Button) findViewById(R.id.settings_button);
-		categorytext = (TextView) findViewById(R.id.top_category);
+		//categorytext = (TextView) findViewById(R.id.top_category);
 		
 		//!!!!!pic = (ImageView) findViewById(R.id.image);
 
@@ -173,7 +173,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 			    public void onClick(DialogInterface dialog, int which) {
 			    Log.d("CameraAppActivity", "#####which pressed" +which);
 			    Log.d("CameraAppActivity", "#####Category chosen: " +categoryItems[which]);
-			    categorytext.setText(categoryItems[which]);
+			    //categorytext.setText(categoryItems[which]);
 			    chosenCategory = categoryItems[which];
 			      dialog.dismiss();
 			    }

@@ -12,6 +12,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 	<string name="no_category_text">No category set</string>
+	<string name="logo">This is a logo</string>
 	
     <string name="category_prompt">Choose a category</string>
  

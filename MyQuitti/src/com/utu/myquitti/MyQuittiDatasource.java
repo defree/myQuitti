@@ -1,5 +1,7 @@
 package com.utu.myquitti;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +22,14 @@ import android.util.Log;
  * SELECT * from receiptinfo inner join category on receiptinfo.receiptid=category.fk_category_receiptinfo
  * SELECT receiptinfo.receiptId, receiptinfo.photoname,category.categorytext FROM receiptinfo,category WHERE receiptinfo.receiptid=category.fk_category_receiptinfo and category.categorytext like 'Business'
  */
+
 public class MyQuittiDatasource {
 	// Database fields
 	  private SQLiteDatabase database;
 	  private MySQLiteHelper dbHelper;
+	  
+	  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	  
 	  private String[] allColumns = { MySQLiteHelper.COLUMN_RECEIPTID,
 	      MySQLiteHelper.COLUMN_PHOTONAME,MySQLiteHelper.COLUMN_DIRECTORY,MySQLiteHelper.COLUMN_EXTRAINFO,
 	      MySQLiteHelper.COLUMN_ISCHECKED,MySQLiteHelper.COLUMN_ROOTDIRECTORY};
@@ -55,7 +61,7 @@ public class MyQuittiDatasource {
 	   * @param comment
 	   * @return
 	   */
-	  public ReceiptImage createReceipt(String rootDirectory,String directory, String Extrainfo, String photoName, String isChecked, String latitude, String longitude, String category) {
+	  public ReceiptImage createReceipt(String rootDirectory,String directory, String Extrainfo, String photoName, String isChecked, String latitude, String longitude, String category) throws ParseException {
 		  Log.v("MyQuittiDataSource", "--category----->" +category);
 		  Log.d("createReceipt", "--createReceipt--"); 
 		ContentValues values = new ContentValues();
@@ -148,8 +154,9 @@ public class MyQuittiDatasource {
 	   * Returns a list of all receipts in phones memory
 	   * @Sami Nurmi
 	   * @return List
+	 * @throws ParseException 
 	   */
-	  public List<ReceiptImage> getAllReceipts() {
+	  public List<ReceiptImage> getAllReceipts() throws ParseException {
 	    System.out.println("**********getAllReceipts getAllReceipts ************");
 		  List<ReceiptImage> receipts = new ArrayList<ReceiptImage>();
 
@@ -175,8 +182,9 @@ public class MyQuittiDatasource {
 	   * SELECT receiptinfo.receiptId, receiptinfo.photoname,category.categorytext FROM receiptinfo,category WHERE receiptinfo.receiptid=category.fk_category_receiptinfo and category.categorytext like 'Business'
 	   * @Sami Nurmi
 	   * @return List
+	 * @throws ParseException 
 	   */
-	  public List<ReceiptImage> getAllReceipts(String category) {
+	  public List<ReceiptImage> getAllReceipts(String category) throws ParseException {
 	    List<ReceiptImage> receipts = new ArrayList<ReceiptImage>();
 
 	    Cursor cursor = database.query(MySQLiteHelper.TABLE_RECEIPTINFO,
@@ -194,7 +202,7 @@ public class MyQuittiDatasource {
 	    return receipts;
 	  }
 
-	  public ReceiptImage getReceiptWithPhotoname(String photoname) {
+	  public ReceiptImage getReceiptWithPhotoname(String photoname) throws ParseException {
 		  Log.d("MyQuittiDatasource", "getReceiptWithPhotoname: "+photoname);
 		  ReceiptImage receipt = null;
 		  this.open();
@@ -274,13 +282,14 @@ public class MyQuittiDatasource {
 		  return category;
 	  }
 	  
-	  private ReceiptImage cursorToReceiptImage(Cursor cursor) {
+	  private ReceiptImage cursorToReceiptImage(Cursor cursor) throws ParseException {
 		  System.out.println("*******************cursorToReceiptImage************************");
 		  ReceiptImage newReceipt = new ReceiptImage();
 		  newReceipt.setReceiptId(cursor.getLong(0));
 		  newReceipt.setPhotoname(cursor.getString(1));
 		  newReceipt.setRootDirectory(cursor.getString(2));
 		  newReceipt.setDirectory(cursor.getString(3));
+		  //newReceipt.setCreateDate(dateFormat.parse(cursor.getString(8)));
 		  
 	    return newReceipt;
 	  }

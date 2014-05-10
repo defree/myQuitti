@@ -3,6 +3,7 @@ package com.utu.myquitti;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +54,12 @@ public class ImageListActivity extends Activity {
 	    
 	    GridView imagegrid = (GridView) findViewById(R.id.gridview);
 	    
-	    getReceiptsFromDB();
+	    try {
+			getReceiptsFromDB();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    
 	    
 	    
@@ -153,7 +159,7 @@ public class ImageListActivity extends Activity {
                
 	}
 	
-	private void getReceiptsFromDB() {
+	private void getReceiptsFromDB() throws ParseException {
 		datasource = new MyQuittiDatasource(getBaseContext());
         datasource.open();
         receipts = datasource.getAllReceipts();

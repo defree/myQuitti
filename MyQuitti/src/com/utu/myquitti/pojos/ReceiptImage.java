@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 
 import android.graphics.Bitmap;
 
@@ -34,6 +35,7 @@ public class ReceiptImage implements Serializable, Comparable<ReceiptImage> {
 	private int height;
 	private Bitmap thumbnail;
 	private String extraInfo;
+	private Date createDate;
 	private Bitmap icon;
 	private boolean isChecked;
 	private int position;	//Position in the window, assigned every time the window is loaded
@@ -231,6 +233,14 @@ public class ReceiptImage implements Serializable, Comparable<ReceiptImage> {
 	 */
 	public void setExtraInfo(String extraInfo) {
 		this.extraInfo = extraInfo;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 	/**
