@@ -14,8 +14,7 @@
 	<string name="no_category_text">No category set</string>
 	<string name="logo">This is a logo</string>
 	
-	<string name="menu_add_category">Add categories</string>
-	<string name="menu_remove_category">Remove categories</string>
+	<string name="menu_manage_categories">Manage categories</string>
 	
 	<string name="add_category">Add category:</string>
 	<string name="add_category_button">Add</string>

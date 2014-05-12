@@ -37,6 +37,8 @@ public class MyQuittiDatasource {
 	  private String[] allCategoryColumns = {MySQLiteHelper.COLUMN_CATEGORYID, MySQLiteHelper.COLUMN_CATEGORYTEXT,
 		      MySQLiteHelper.COLUMN_CATEGORYRECEIPTID};
 
+	  private String[] allUserCategoryColumns = {MySQLiteHelper.COLUMN_CATEGORYID, MySQLiteHelper.COLUMN_CATEGORYTEXT,
+		      MySQLiteHelper.COLUMN_LOCALE, MySQLiteHelper.COLUMN_LANGUAGE};
 	  
 	  public MyQuittiDatasource(Context context) {
 	    dbHelper = new MySQLiteHelper(context);
@@ -109,6 +111,26 @@ public class MyQuittiDatasource {
 	    cursor.close();
 	    Log.v("MyQuittiDataSource", "--addCategory--END---->ID: " +category.getCategoryId());
 	    return category;
+	  }
+	  
+	  public Category addUserCategory(String categorytext) {
+		  Log.v("MyQuittiDataSource", "--addUserCategory--");
+		  
+		ContentValues categoryValues = new ContentValues();
+		categoryValues.put(MySQLiteHelper.COLUMN_CATEGORYTEXT, categorytext);
+			    
+		long insertId = database.insert(MySQLiteHelper.TABLE_USERS_CATEGORY, null,
+			    		categoryValues);
+		System.out.println("################addUserCategory#######################");
+			   
+		Cursor cursor = database.query(MySQLiteHelper.TABLE_USERS_CATEGORY,
+			    		allUserCategoryColumns, MySQLiteHelper.COLUMN_CATEGORYID + " = " + insertId, null,
+			        null, null, null);
+		cursor.moveToFirst();
+		Category category = cursorToCategory(cursor);
+		cursor.close();
+		Log.v("MyQuittiDataSource", "--addUserCategory--END---->ID: " +category.getCategoryId());
+		return category;
 	  }
 
 	  
@@ -240,7 +262,7 @@ public class MyQuittiDatasource {
 		  }
 
 	  
-
+	  /*
 	  public String getSingleCategory(String fotoname){
 		  //SELECT category.categorytext from receiptinfo inner join category on receiptinfo.receiptid=category.fk_category_receiptinfo WHERE photoname + "=" + fotoname
 		  
@@ -260,7 +282,7 @@ public class MyQuittiDatasource {
 		  cursor.close();
 		  return category;
 	  }
-	  
+	  */
 	  private Category getCategory(long receiptId){
 		  System.out.println("########getCategory############");
 		  //fk_category_receiptinfo
@@ -280,6 +302,26 @@ public class MyQuittiDatasource {
 		  
 		  cursor.close();
 		  return category;
+	  }
+	  
+	  public List<Category> getAllUserCategories() throws ParseException {
+		    System.out.println("**********getAllUserCategories************");
+			  List<Category> usercategories = new ArrayList<Category>();
+
+		    Cursor cursor = database.query(MySQLiteHelper.TABLE_USERS_CATEGORY,
+		    		allUserCategoryColumns, null, null, null, null, null);
+
+		    cursor.moveToFirst();
+		    while (!cursor.isAfterLast()) {
+			      Category category = cursorToUserCategory(cursor);
+	
+			      System.out.println("CATEGORYID----->" +category.getCategoryId());
+			      usercategories.add(category);
+			      cursor.moveToNext();
+		    }
+		    // make sure to close the cursor
+		    cursor.close();
+		    return usercategories;
 	  }
 	  
 	  private ReceiptImage cursorToReceiptImage(Cursor cursor) throws ParseException {
@@ -302,6 +344,17 @@ public class MyQuittiDatasource {
 		  newCategory.setCategoryText(cursor.getString(1));
 		  System.out.println("CATEGORY: " +newCategory.getCategoryText());
 		  newCategory.setReceiptId(cursor.getLong(2));
+		  System.out.println("newCategory in cursorToCategory---->" +newCategory);
+	    return newCategory;
+	  }
+	  
+	  private Category cursorToUserCategory(Cursor cursor) {
+		System.out.println("*******************cursorToUserCategory************************KOLUMNEJA" +cursor.getColumnCount());
+		  //Log.d("cursorToCategory", "cursor.getLong(0) ID..>" +cursor.getLong(0) +" CATEGORYTEXT: " + cursor.getString(1) + " cursor.getLong(2) RECEIPTID---> " +cursor.getLong(2));
+		  Category newCategory = new Category();
+		  newCategory.setCategoryId(cursor.getLong(0));
+		  newCategory.setCategoryText(cursor.getString(1));
+		  System.out.println("CATEGORY: " +newCategory.getCategoryText());
 		  System.out.println("newCategory in cursorToCategory---->" +newCategory);
 	    return newCategory;
 	  }

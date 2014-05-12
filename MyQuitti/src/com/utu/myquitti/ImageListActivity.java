@@ -108,6 +108,7 @@ public class ImageListActivity extends Activity {
 					if (temp.isChecked()){
 						cnt++;
 						datasource.deleteReceipt(temp); //Remove from db
+						datasource.deleteCategory(temp.receiptId);
 						receipts.remove(i);
 						filelocation = Environment.getExternalStorageDirectory().toString()+temp.getRootDirectory()+"/"+temp.getPhotoname();
 						File file = new File(filelocation);

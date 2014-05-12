@@ -2,10 +2,8 @@
 
     <item  
         android:id="@+id/add_cat"  
-        android:title="@string/menu_add_category"/>  
+        android:title="@string/menu_manage_categories"/>  
 
-    <item  
-        android:id="@+id/remove_cat"  
-        android:title="@string/menu_remove_category"/>  
+
 
 </menu>  
