@@ -52,7 +52,7 @@ public class ImageListActivity extends Activity {
 	    setContentView(R.layout.activity_list);
 	    Log.d("ImageListActivity", "#####ImageListActivity.onCreate()#####");
 	    
-	    GridView imagegrid = (GridView) findViewById(R.id.gridview);
+	    final GridView imagegrid = (GridView) findViewById(R.id.gridview);
 	    
 	    try {
 			getReceiptsFromDB();
@@ -61,7 +61,7 @@ public class ImageListActivity extends Activity {
 			e.printStackTrace();
 		}
 	    
-	    
+	    //Collections.sort(receipts, ReceiptImage.CategoryComparator);
 	    
 	    final ImageAdapter imageAdapter = new ImageAdapter(this);
 	    
@@ -108,6 +108,7 @@ public class ImageListActivity extends Activity {
 					if (temp.isChecked()){
 						cnt++;
 						datasource.deleteReceipt(temp); //Remove from db
+						receipts.remove(i);
 						filelocation = Environment.getExternalStorageDirectory().toString()+temp.getRootDirectory()+"/"+temp.getPhotoname();
 						File file = new File(filelocation);
 						boolean deleted = file.delete(); //Remove file from storage
@@ -124,9 +125,13 @@ public class ImageListActivity extends Activity {
 					Log.d("SelectedImages", selectImages);
 				}
 				datasource.close();
+
+				imageAdapter.notifyDataSetChanged();
+				/*
 				Intent intent = getIntent();
 				finish();
 				startActivity(intent);
+				*/
 			}
 		
         });
@@ -143,13 +148,19 @@ public class ImageListActivity extends Activity {
         		        Toast.makeText(getApplicationContext(), "Sorting by "+items[i], Toast.LENGTH_SHORT).show();
         		        if (items[i] == "Category"){
         		        	Collections.sort(receipts, ReceiptImage.CategoryComparator);
+        		        	System.out.println("sorting by categroy");
         		        }
         		        else if (items[i] == "Date"){
         		        	//jos date
         		        }
-    					Intent intent = getIntent();
+        		        imageAdapter.notifyDataSetChanged();
+        		        /*
+        		        Intent intent = getIntent();
     					finish();
+    					//intent.putExtra("receiptObject",receipts);
     					startActivity(intent);
+    					*/
+    					
         		    }
         		});
         		AlertDialog alert = builder.create();
@@ -160,6 +171,9 @@ public class ImageListActivity extends Activity {
 	}
 	
 	private void getReceiptsFromDB() throws ParseException {
+		
+		receipts = null;
+		
 		datasource = new MyQuittiDatasource(getBaseContext());
         datasource.open();
         receipts = datasource.getAllReceipts();
