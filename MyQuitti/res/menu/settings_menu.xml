@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >  
+
+    <item  
+        android:id="@+id/add_cat"  
+        android:title="@string/menu_add_category"/>  
+
+    <item  
+        android:id="@+id/remove_cat"  
+        android:title="@string/menu_remove_category"/>  
+
+</menu>  

@@ -38,6 +38,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.utu.myquitti.CategoryAddActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.utu.myquitti.MyQuittiCameraActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_my_quitti_camera"
