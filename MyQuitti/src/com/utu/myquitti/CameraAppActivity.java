@@ -102,7 +102,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		bmp = BitmapFactory.decodeStream(is);
 		list = (Button) findViewById(R.id.list);
 		take = (Button) findViewById(R.id.tak);
-		category = (Button) findViewById(R.id.category);
+		//category = (Button) findViewById(R.id.category);
 		settings = (Button) findViewById(R.id.settings_button);
 		//categorytext = (TextView) findViewById(R.id.top_category);
 		
@@ -114,7 +114,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		
 		settings.setOnClickListener(this);
 		
-		category.setOnClickListener(this);
+		//category.setOnClickListener(this);
 		images = new ImageArray();
 		
 		/* TODO: Think where and when is wise to populate this list with images in phones memory?
@@ -167,7 +167,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		/*
 		 *When pressed Choose a category-button, dialog will
 		 * open and user can choose a category to his receipts 
-		 */
+		 
 		else if (id == R.id.category) {
 			
 			Log.d("CameraAppActivity", "Category-button pressed");
@@ -189,7 +189,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 			    }
 			  }).create().show();
 			take.setClickable(true);
-        }
+        }*/
 		
 		//Only works on API 11
 		else if (id == R.id.settings_button) {
