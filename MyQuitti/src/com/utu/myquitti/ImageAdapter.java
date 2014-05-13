@@ -247,7 +247,4 @@ public class ImageAdapter extends BaseAdapter {
 
 		return gridView;
 	}
-	
-	
-	
 }

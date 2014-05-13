@@ -18,7 +18,7 @@ public class Category implements Serializable {
 	public long categoryId;
 	public long receiptId;
 	
-	
+	private int position;
 	
 	public Category(String categoryText, boolean selected, long categoryId,
 			long receiptId) {
@@ -90,6 +90,16 @@ public class Category implements Serializable {
 	 */
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+
+
+	public int getPosition() {
+		return position;
+	}
+
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 	
 }

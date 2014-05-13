@@ -102,7 +102,7 @@ public class ImageListActivity extends Activity {
 				
 				int cnt = 0;
 				String selectImages = "";
-				for (int i =0; i<receipts.size(); i++)
+				for (int i=receipts.size()-1; i>=0; i--)
 				{
 					temp = receipts.get(i);
 					if (temp.isChecked()){

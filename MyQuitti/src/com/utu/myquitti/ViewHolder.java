@@ -6,11 +6,9 @@ import android.widget.TextView;
 
 public class ViewHolder {
 
+	ImageView imageView;
+	TextView textView;
+	CheckBox checkBox;
 	
-		ImageView imageView;
-		TextView textView;
-		CheckBox checkBox;
-		
-		int id;
-	}
-
+	int id;
+}

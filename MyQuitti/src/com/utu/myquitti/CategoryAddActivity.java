@@ -5,6 +5,7 @@
 package com.utu.myquitti;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.text.ParseException;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -41,6 +43,7 @@ public class CategoryAddActivity extends Activity {
 	private Category newCategory;
 	private ArrayList<String> addedCategories = new ArrayList<String>();
 	private Button add;
+	private Button delete;
 	private EditText addtext;
 	
     @Override
@@ -88,6 +91,51 @@ public class CategoryAddActivity extends Activity {
 			
 		});
         
+        delete = (Button)findViewById(R.id.delete_category);
+        
+        delete.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				
+				datasource = new MyQuittiDatasource(getBaseContext());
+				datasource.open();
+
+				Category temp;
+				
+				int cnt = 0;
+				String selectImages = "";
+				for (int i=userCategories.size()-1; i>=0; i--)				
+				{
+					System.out.println("Category: "+userCategories.get(i).getCategoryText()+" Selected: "+userCategories.get(i).isSelected());
+					temp = userCategories.get(i);
+					if (temp.isSelected()){
+						cnt++;
+						datasource.deleteUserCategory(temp.categoryId);
+						userCategories.remove(i);
+					}
+				}
+				if (cnt == 0){
+					Toast.makeText(getApplicationContext(),
+							"Please select at least one category!",
+							Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(getApplicationContext(),
+							cnt + " categories deleted.",
+							Toast.LENGTH_LONG).show();
+					Log.d("SelectedImages", selectImages);
+				}
+				datasource.close();
+
+				listadapter.notifyDataSetChanged();
+				/*
+				Intent intent = getIntent();
+				finish();
+				startActivity(intent);
+				*/
+			}
+		
+        });
+        
         
     }
     
@@ -123,6 +171,8 @@ public class CategoryAddActivity extends Activity {
     private class CategoryListAdapter extends ArrayAdapter<String> {
     	
     	private final Context context;
+    	private ViewHolder holder;
+    	
     	//private List<Category> userCategories;
     	
     	
@@ -138,23 +188,64 @@ public class CategoryAddActivity extends Activity {
 
         @Override
         public long getItemId(int i) {
-            // TODO Auto-generated method stub
             return userCategories.get(i).categoryId;
         }
     	
     	@Override
     	public View getView(int position, View convertView, ViewGroup parent) {
-
+    		
     		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    	 
-			View rowView = inflater.inflate(R.layout.category_add_listitem, parent, false);
-			TextView textView = (TextView) rowView.findViewById(R.id.user_category_text);
+    		View rowView;
+    		
+    		userCategories.get(position).setPosition(position);
+    		
+    		if (convertView == null) {
+    			holder = new ViewHolder();
+    			rowView = inflater.inflate(R.layout.category_add_listitem, parent, false);
+    			
+    			holder.textView = (TextView) rowView.findViewById(R.id.user_category_text);
+    			holder.checkBox = (CheckBox) rowView.findViewById(R.id.user_category_select); 
+    			
+    			rowView.setTag(holder);
+    		}
+    		else {
+    			rowView = (View) convertView;
+    			holder = (ViewHolder) rowView.getTag();
+    		}
+    		
+    		holder.checkBox.setId(position);
+    		holder.textView.setId(position);
+    		
+    		holder.checkBox.setOnClickListener(new View.OnClickListener() {
 
-			textView.setText(userCategories.get(position).getCategoryText());
+    			public void onClick(View v) {
+    				// TODO Auto-generated method stub
+    				CheckBox cb = (CheckBox) v;
+    				int id = cb.getId();
+    				System.out.println(id);
+    				
+    				for (int i = 0; i < userCategories.size(); i++) {
+    					if (userCategories.get(i).getPosition() == id) {
+							if (userCategories.get(i).isSelected()){
+								cb.setChecked(false);							
+								userCategories.get(i).setSelected(false);
+							} else {
+								cb.setChecked(true);
+								userCategories.get(i).setSelected(true);
+							}
+    					}
+    				}
+    			}
+    		});
+    		
+			holder.textView.setText(userCategories.get(position).getCategoryText());
+			holder.checkBox.setChecked(userCategories.get(position).isSelected());
+			
+			holder.id = position;
+			
 			System.out.println("position "+position);
 			System.out.println("user category: "+userCategories.get(position).getCategoryText());
 			return rowView;
-
     	}
     }
 }

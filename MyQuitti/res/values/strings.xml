@@ -35,5 +35,5 @@
     <string name="category_text">Category</string>
     <string name="date_text">Date</string>
     <string name="checkbox">CheckBoxTEST</string>
-    <string name="imagelistcheckbox"></string>
+    <string name="emptycheckbox"></string>
 </resources>

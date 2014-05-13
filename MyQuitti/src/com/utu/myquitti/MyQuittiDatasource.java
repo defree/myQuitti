@@ -157,6 +157,15 @@ public class MyQuittiDatasource {
 	    database.delete(MySQLiteHelper.TABLE_CATEGORY, MySQLiteHelper.COLUMN_CATEGORYRECEIPTID
 	        + " = " + receiptId, null);
 	  }
+	  
+	  public void deleteUserCategory(long categoryId) {
+		    
+		Log.d("MyQuittiDatasource", "deleteUserCategory() usercategory deleted with categoryid: " + categoryId);
+	    database.delete(MySQLiteHelper.TABLE_USERS_CATEGORY, MySQLiteHelper.COLUMN_CATEGORYID
+	        + " = " + categoryId, null);
+	  }
+	  
+	  
 	  /**
 	   * Method for deleting all of the receipts and categories
 	   * @Sami Nurmi
