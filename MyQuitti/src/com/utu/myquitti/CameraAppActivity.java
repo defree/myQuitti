@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -81,6 +82,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     private MyQuittiDatasource datasource;
     private String[] categoryItems;
     private String chosenCategory;
+    private String[] chosenCategories;
     
     MyCustomAdapter dataAdapter = null;
     
@@ -260,13 +262,26 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
                     
                     savedImage.setmPhoto(mPhoto);
                     savedImages.add(savedImage);
-                    System.out.println("#########Ennen createReceipt 1 ###############");
+                    
                     fileout.flush();
                     fileout.close();
                     
-                    System.out.println("#########Ennen createReceipt 2 ###############");
+                    System.out.println("dataAdapter--->" +dataAdapter);
+                    chosenCategories = new String[dataAdapter.getSelectedCategories().size()];
+                    for (int i = 0; i < dataAdapter.getSelectedCategories().size(); i++) {
+						
+                    	Category temp = dataAdapter.getSelectedCategories().get(i);
+                    	chosenCategories[i]=temp.getCategoryText();
+                    	System.out.println("TEKSTI---->" +temp.getCategoryText());
+                    	chosenCategory+=temp.getCategoryText();
+                    	System.out.println("chosenCategory------->" +chosenCategory);
+					}
+                    
+                    
                     datasource.open();
-                    datasource.createReceipt(savedImage.getRootDirectory(), "/receipts", "TESTING", fotoname,"","","",chosenCategory);
+                    //datasource.createReceipt(savedImage.getRootDirectory(), "/receipts", "TESTING", fotoname,"","","",chosenCategory);
+                    datasource.createReceiptWithCategories(savedImage.getRootDirectory(), "/receipts", "TESTING", fotoname,"","","",chosenCategories);
+                    
                     datasource.close();
                     System.out.println("#########Ennen createReceipt 3 ###############");
                     Toast.makeText(getApplicationContext(), "Saved to your folder with category: " +chosenCategory, Toast.LENGTH_SHORT ).show();
@@ -304,12 +319,27 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     	
     	  //Array list of countries
     	  ArrayList<Category> categoryList = new ArrayList<Category>();
-    	  Category category1 = new Category("category1",false);
+    	  datasource.open();
+    	  try {
+			categoryList =  (ArrayList<Category>) datasource.getAllUserCategories();
+		} catch (ParseException e) {
+			Log.e("CameraAppActivity", e.getMessage());
+			e.printStackTrace();
+		}
+
+          
+          datasource.close();
+    	  
+    	  Category category1 = new Category("London",false);
     	  categoryList.add(category1);
-    	  Category category2 = new Category("category2",false);
+    	  Category category2 = new Category("Trade show in Pihtipudas",false);
     	  categoryList.add(category2);
-    	  Category category3 = new Category("category3",false);
+    	  Category category3 = new Category("Business trip to Peking",false);
     	  categoryList.add(category3);
+    	  
+    	  
+          
+    	  
     	  
     	  Log.d("CameraAppActivity", "##### 2");
     	  //create an ArrayAdaptar from the String Array
@@ -328,8 +358,9 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     	    // When clicked, show a toast with the TextView text
     	    Category category = (Category) parent.getItemAtPosition(position);
     	    Toast.makeText(getApplicationContext(),
-    	      "Clicked on Row: " + category.getCategoryText(),
-    	      Toast.LENGTH_LONG).show();
+    	      "Chosen category: " + category.getCategoryText(),
+    	      Toast.LENGTH_SHORT).show();
+    	   
     	   }
     	  });
     	  

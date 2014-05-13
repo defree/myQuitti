@@ -12,7 +12,7 @@ public class Category implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
-	private String categoryText;
+	private String categoryText="";
 	private boolean selected = false;
 	
 	public long categoryId;

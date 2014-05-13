@@ -17,6 +17,7 @@ import com.utu.myquitti.pojos.Category;
 public class MyCustomAdapter extends ArrayAdapter<Category> {
 
 	private ArrayList<Category> categoryList;
+	private ArrayList<Category> selectedCategories;
 	Context ctx;
 	  
 	  public MyCustomAdapter(Context context, int textViewResourceId,
@@ -41,17 +42,18 @@ public class MyCustomAdapter extends ArrayAdapter<Category> {
    	   holder.categoryText = (TextView) convertView.findViewById(R.id.category_text);
    	   holder.categoryId = (CheckBox) convertView.findViewById(R.id.checkBox1);
    	   convertView.setTag(holder);
-   	  
+     	selectedCategories = new ArrayList<Category>();
    	    holder.categoryId.setOnClickListener( new View.OnClickListener() { 
    	     public void onClick(View v) { 
    	      CheckBox cb = (CheckBox) v ; 
    	      Category category = (Category) cb.getTag(); 
-   	      
+   	      System.out.println("???????????selectedCategories??????????????????"+selectedCategories);
+   	      selectedCategories.add(category); 
    	      Toast.makeText(ctx,
-   	       "Clicked on Checkbox: " + cb.getText() +
-   	       " is " + cb.isChecked(),
-   	       Toast.LENGTH_LONG).show();
+   	       "Chosen category: " + cb.getText(),
+   	       Toast.LENGTH_SHORT).show();
    	      category.setSelected(cb.isChecked());
+   	   
    	     } 
    	    }); 
    	   }
@@ -73,6 +75,22 @@ public class MyCustomAdapter extends ArrayAdapter<Category> {
    	   return convertView;
    	  
    	  }
+
+	/**
+	 * @return the selectedCategories
+	 */
+	public ArrayList<Category> getSelectedCategories() {
+		return selectedCategories;
+	}
+
+	/**
+	 * @param selectedCategories the selectedCategories to set
+	 */
+	public void setSelectedCategories(ArrayList<Category> selectedCategories) {
+		this.selectedCategories = selectedCategories;
+	}
+
+	
    	  
    	 }
 	

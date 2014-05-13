@@ -89,6 +89,37 @@ public class MyQuittiDatasource {
 	    return newReceipt;
 	  }
 	  
+	  public ReceiptImage createReceiptWithCategories(String rootDirectory,String directory, String Extrainfo, String photoName, String isChecked, String latitude, String longitude, String categories[]) throws ParseException {
+		  Log.d("createReceiptWithCategories", "--createReceiptWithCategories--");
+		  Log.v("MyQuittiDataSource", "--categories LENGTH----->" +categories.length);
+		   
+		ContentValues values = new ContentValues();
+	    values.put(MySQLiteHelper.COLUMN_PHOTONAME, photoName);
+	    values.put(MySQLiteHelper.COLUMN_ROOTDIRECTORY, rootDirectory);
+	    values.put(MySQLiteHelper.COLUMN_DIRECTORY, directory);
+	    values.put(MySQLiteHelper.COLUMN_EXTRAINFO, Extrainfo);
+	    values.put(MySQLiteHelper.COLUMN_ISCHECKED, isChecked);
+	    values.put(MySQLiteHelper.COLUMN_LATITUDE, isChecked);
+	    values.put(MySQLiteHelper.COLUMN_LONGITUDE, isChecked);
+	    
+	    long insertId = database.insert(MySQLiteHelper.TABLE_RECEIPTINFO, null,
+	        values);
+	    System.out.println("insertIdinsertIdinsertIdinsertId--->" +insertId);
+	    Cursor cursor = database.query(MySQLiteHelper.TABLE_RECEIPTINFO,
+	        allColumns, MySQLiteHelper.COLUMN_RECEIPTID + " = " + insertId, null,
+	        null, null, null);
+	    cursor.moveToFirst();
+	    ReceiptImage newReceipt = cursorToReceiptImage(cursor);
+	    cursor.close();
+	    //TODO: This is stupid way, but we were hurry
+	    for (int i = 0; i < categories.length; i++) {
+	    	this.addCategory(categories[i], newReceipt.getReceiptId());
+		}
+	    
+	    Log.v("MyQuittiDataSource", "--createReceipt--END");
+	    return newReceipt;
+	  }
+	  
 	  /**create table category(categoryId INTEGER primary key autoincrement,categorytext TEXT,
 	   *  fk_category_receiptinfo INTEGER,FOREIGN KEY(fk_category_receiptinfo) REFERENCES receiptinfo(receiptId)); 
 	   */
