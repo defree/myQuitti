@@ -61,7 +61,7 @@ import android.widget.Toast;
 
 public class CameraAppActivity extends Activity implements View.OnClickListener {
 
-	Button list,take,category,settings;
+	Button list,take,category,settings,home;
 	TextView categorytext;
 	ImageView pic;
 	Intent i;
@@ -102,7 +102,7 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 		bmp = BitmapFactory.decodeStream(is);
 		list = (Button) findViewById(R.id.list);
 		take = (Button) findViewById(R.id.tak);
-		//category = (Button) findViewById(R.id.category);
+		home = (Button) findViewById(R.id.home_button);
 		settings = (Button) findViewById(R.id.settings_button);
 		//categorytext = (TextView) findViewById(R.id.top_category);
 		
@@ -110,9 +110,10 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 
 		list.setOnClickListener(this);
 		take.setOnClickListener(this);
-		take.setClickable(false);
-		
 		settings.setOnClickListener(this);
+		home.setOnClickListener(this);
+		
+		take.setClickable(true);
 		
 		//category.setOnClickListener(this);
 		images = new ImageArray();
