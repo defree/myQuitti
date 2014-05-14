@@ -144,8 +144,10 @@ public class ImageAdapter extends BaseAdapter {
         //System.out.println(currentImage.getCategory());
         
         try {
-        	
-        	category = currentImage.getCategory().getCategoryText();
+        	for (int j = 0; j < currentImage.getCategories().size(); j++) {
+				category = category + currentImage.getCategories().get(j).getCategoryText() + " ";
+			}
+        	//category = currentImage.getCategory().getCategoryText();
 
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -229,9 +229,9 @@ public class MyQuittiDatasource {
 	    while (!cursor.isAfterLast()) {
 	      ReceiptImage receipt = cursorToReceiptImage(cursor);
 	      //Category category = this.getCategory(receipt.getReceiptId());
-	      List<Category> categorylist = this.getAllCategories(receipt.getReceiptId());
+	      List<Category> categories = this.getAllCategories(receipt.getReceiptId());
 	      System.out.println("RECEIPTID----->" +receipt.getReceiptId());
-	      receipt.setCategories(categorylist);
+	      receipt.setCategories(categories);
 	      receipts.add(receipt);
 	      cursor.moveToNext();
 	    }
@@ -345,11 +345,11 @@ public class MyQuittiDatasource {
 		  return category;
 	  }
 	  
-	  private ArrayList<Category> getAllCategories(long receiptId){
+	  private List<Category> getAllCategories(long receiptId){
 		  System.out.println("########getCategory############");
 		  //fk_category_receiptinfo
 		  //Cursor c = db.rawQuery("SELECT * FROM tbl1 WHERE TRIM(name) = '"+name.trim()+"'", null);
-		  ArrayList<Category> categorylist = null;
+		  List<Category> categorylist = new ArrayList<Category>();
 		  Cursor cursor = database.query(MySQLiteHelper.TABLE_CATEGORY,
 			        allCategoryColumns, MySQLiteHelper.COLUMN_CATEGORYRECEIPTID + " = " + receiptId, null,
 			        null, null, null);
@@ -361,6 +361,7 @@ public class MyQuittiDatasource {
 				 Category category = cursorToCategory(cursor);
 			     categorylist.add(category);
 			     cursor.moveToNext();
+			     System.out.println("Got one category!");
 			 }
 			  
 		  }else{

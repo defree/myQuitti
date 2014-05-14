@@ -47,7 +47,13 @@ public class FullImageActivity extends Activity {
         
         //dateText.setText(fullImage.getCreateDate().toString());
         imageView.setImageBitmap(bmap);//Set image
-        categoryText.setText(fullImage.getCategory().getCategoryText());
+        String categories = "";
+        
+    	for (int j = 0; j < fullImage.getCategories().size(); j++) {
+			categories = categories + fullImage.getCategories().get(j).getCategoryText() + " ";
+		}
+        
+        categoryText.setText(categories);
     }
  
 }
