@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import android.graphics.Bitmap;
 
@@ -327,6 +328,17 @@ public class ReceiptImage implements Serializable, Comparable<ReceiptImage> {
         public int compare(ReceiptImage r1, ReceiptImage r2) {
             return r1.getCategory().getCategoryText().compareTo(r2.getCategory().getCategoryText());
         }
+    }; 
+    
+    //Sorting by categorylist, doesnt work
+    public static Comparator<List<Category>> CategoryListComparator = new Comparator<List<Category>>() {
+    	//Sort receipts by Category
+
+		@Override
+		public int compare(List<Category> c1, List<Category> c2) {
+			// TODO Auto-generated method stub
+			return c1.get(1).getCategoryText().compareTo(c2.get(1).getCategoryText());
+		}
     }; 
 
 }

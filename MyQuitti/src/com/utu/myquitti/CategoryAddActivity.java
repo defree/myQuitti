@@ -39,7 +39,8 @@ import android.widget.Toast;
 public class CategoryAddActivity extends Activity {
  
 	private MyQuittiDatasource datasource;
-	private List<Category> userCategories;
+	private static List<Category> userCategories;
+
 	private Category newCategory;
 	private ArrayList<String> addedCategories = new ArrayList<String>();
 	private Button add;
@@ -53,7 +54,7 @@ public class CategoryAddActivity extends Activity {
         
         Log.d("CategoryAddActivity", "#####CategoryAddActivity.onCreate()#####");
 
-        //getCategoriesFromDB();
+        getCategoriesFromDB();
         
        
         final ListView categoryList = (ListView)findViewById(R.id.add_category_list);
@@ -82,10 +83,13 @@ public class CategoryAddActivity extends Activity {
 				//addedCategories.add(newCategory);
 				
 				addCategoryToDB(newCategory);				//Add new category to db
+				userCategories.add(new Category(newCategory,false));
 				
 				getCategoriesFromDB();
-				listadapter.notifyDataSetChanged();
-				categoryList.setSelection(listadapter.getCount() - 1);
+				listadapter.notifyDataSetChanged();			//Notify adapter that there is a new category
+
+				
+				categoryList.setSelection(listadapter.getCount() - 1);//Scroll to the end of the list
 				//return true;
 			}
 			
@@ -155,7 +159,7 @@ public class CategoryAddActivity extends Activity {
         datasource.close();
     }
     
-    private void getCategoriesFromDB()  {
+    public void getCategoriesFromDB()  {
 
 		
     	userCategories = null;
@@ -173,84 +177,8 @@ public class CategoryAddActivity extends Activity {
         datasource.close();
     }
     
-    private class CategoryListAdapter extends ArrayAdapter<String> {
-    	
-    	private final Context context;
-    	private ViewHolder holder;
-    	
-    	//private List<Category> userCategories;
-    	
-    	
-    	public CategoryListAdapter(Context context) {
-    	    super(context, R.layout.category_add_listitem);
-    	    this.context = context;
-    	    getCategoriesFromDB();
-    	}
-
-        public int getCount() {
-            return userCategories.size();
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return userCategories.get(i).categoryId;
-        }
-    	
-    	@Override
-    	public View getView(int position, View convertView, ViewGroup parent) {
-    		
-    		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    		View rowView;
-    		
-    		userCategories.get(position).setPosition(position);
-    		
-    		if (convertView == null) {
-    			holder = new ViewHolder();
-    			rowView = inflater.inflate(R.layout.category_add_listitem, parent, false);
-    			
-    			holder.textView = (TextView) rowView.findViewById(R.id.user_category_text);
-    			holder.checkBox = (CheckBox) rowView.findViewById(R.id.user_category_select); 
-    			
-    			rowView.setTag(holder);
-    		}
-    		else {
-    			rowView = (View) convertView;
-    			holder = (ViewHolder) rowView.getTag();
-    		}
-    		
-    		holder.checkBox.setId(position);
-    		holder.textView.setId(position);
-    		
-    		holder.checkBox.setOnClickListener(new View.OnClickListener() {
-
-    			public void onClick(View v) {
-    				// TODO Auto-generated method stub
-    				CheckBox cb = (CheckBox) v;
-    				int id = cb.getId();
-    				System.out.println(id);
-    				
-    				for (int i = 0; i < userCategories.size(); i++) {
-    					if (userCategories.get(i).getPosition() == id) {
-							if (userCategories.get(i).isSelected()){
-								cb.setChecked(false);							
-								userCategories.get(i).setSelected(false);
-							} else {
-								cb.setChecked(true);
-								userCategories.get(i).setSelected(true);
-							}
-    					}
-    				}
-    			}
-    		});
-    		
-			holder.textView.setText(userCategories.get(position).getCategoryText());
-			holder.checkBox.setChecked(userCategories.get(position).isSelected());
-			
-			holder.id = position;
-			
-			System.out.println("position "+position);
-			System.out.println("user category: "+userCategories.get(position).getCategoryText());
-			return rowView;
-    	}
-    }
+	public static List<Category> getUserCategories() {
+		return userCategories;
+	}
+    
 }

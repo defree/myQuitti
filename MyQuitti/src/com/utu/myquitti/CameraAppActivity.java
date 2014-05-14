@@ -19,6 +19,7 @@ import java.util.Date;
 
 
 
+
 import com.utu.myquitti.pojos.Category;
 //import com.utu.myquitti.pojos.BitmapDataObject;
 //import com.utu.myquitti.pojos.Canvas;
@@ -46,6 +47,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -94,6 +96,9 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
     	
     	
     	super.onCreate(b);
+    	
+    	this.requestWindowFeature(Window.FEATURE_NO_TITLE);	//Removes top bar
+    	
 		setContentView(R.layout.activity_main);
 		displayCategoryListView();
 		Log.d("CameraAppActivity", "#####CameraAppActivity.onCreate()#####");
