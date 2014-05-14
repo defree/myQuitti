@@ -139,6 +139,11 @@ public class CategoryAddActivity extends Activity {
         
     }
     
+    public void onBackPressed() {
+    	setResult(RESULT_OK);
+        finish();
+    }
+    
     private void addCategoryToDB(String category) {
 
 		

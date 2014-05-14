@@ -300,7 +300,11 @@ public class CameraAppActivity extends Activity implements View.OnClickListener 
 
     }
   
-    
+    public void onResume(){
+    	super.onResume();
+    	//dataAdapter.notifyDataSetChanged();
+    	displayCategoryListView();
+    }
     
     /**
      * When the app is opening, saved images is read to this list
