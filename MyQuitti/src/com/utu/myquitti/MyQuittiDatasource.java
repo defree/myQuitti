@@ -228,9 +228,10 @@ public class MyQuittiDatasource {
 	    cursor.moveToFirst();
 	    while (!cursor.isAfterLast()) {
 	      ReceiptImage receipt = cursorToReceiptImage(cursor);
-	      Category category = this.getCategory(receipt.getReceiptId());
+	      //Category category = this.getCategory(receipt.getReceiptId());
+	      List<Category> categorylist = this.getAllCategories(receipt.getReceiptId());
 	      System.out.println("RECEIPTID----->" +receipt.getReceiptId());
-	      receipt.setCategory(category);
+	      receipt.setCategories(categorylist);
 	      receipts.add(receipt);
 	      cursor.moveToNext();
 	    }
@@ -342,6 +343,32 @@ public class MyQuittiDatasource {
 		  
 		  cursor.close();
 		  return category;
+	  }
+	  
+	  private ArrayList<Category> getAllCategories(long receiptId){
+		  System.out.println("########getCategory############");
+		  //fk_category_receiptinfo
+		  //Cursor c = db.rawQuery("SELECT * FROM tbl1 WHERE TRIM(name) = '"+name.trim()+"'", null);
+		  ArrayList<Category> categorylist = null;
+		  Cursor cursor = database.query(MySQLiteHelper.TABLE_CATEGORY,
+			        allCategoryColumns, MySQLiteHelper.COLUMN_CATEGORYRECEIPTID + " = " + receiptId, null,
+			        null, null, null);
+		  cursor.moveToFirst();
+		 System.out.println("CURSOR COUNT--->" +cursor.getCount());
+		 		 
+		 if(cursor.getCount()>0){
+			 while (!cursor.isAfterLast()) {				 
+				 Category category = cursorToCategory(cursor);
+			     categorylist.add(category);
+			     cursor.moveToNext();
+			 }
+			  
+		  }else{
+			  categorylist.add(new Category());
+		  }
+		  
+		  cursor.close();
+		  return categorylist;
 	  }
 	  
 	  public List<Category> getAllUserCategories() throws ParseException {

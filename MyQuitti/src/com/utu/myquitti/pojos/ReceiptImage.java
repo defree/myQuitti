@@ -27,7 +27,7 @@ public class ReceiptImage implements Serializable, Comparable<ReceiptImage> {
 	private String photoname;
 	private Bitmap mPhoto; // Esa, this is a problem (Bitmap), this is not
 							// serializing!
-	private ArrayList<Category> categories;
+	private List<Category> categories;
 	private Category category;
 	private ArrayList<Tag> tags;
 	private File file;
@@ -119,7 +119,7 @@ public class ReceiptImage implements Serializable, Comparable<ReceiptImage> {
 	/**
 	 * @return the categories
 	 */
-	public ArrayList<Category> getCategories() {
+	public List<Category> getCategories() {
 		return categories;
 	}
 
@@ -127,7 +127,7 @@ public class ReceiptImage implements Serializable, Comparable<ReceiptImage> {
 	 * @param categories
 	 *            the categories to set
 	 */
-	public void setCategories(ArrayList<Category> categories) {
+	public void setCategories(List<Category> categories) {
 		this.categories = categories;
 	}
 
